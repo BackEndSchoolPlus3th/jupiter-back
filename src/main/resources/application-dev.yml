@@ -1,0 +1,6 @@
+custom:
+  site:
+    name: "WYL"
+    cookieDomain: "${custom.prod.cookieDomain}"
+    frontUrl: "${custom.prod.frontUrl}"
+    backUrl: "${custom.prod.backUrl}"
