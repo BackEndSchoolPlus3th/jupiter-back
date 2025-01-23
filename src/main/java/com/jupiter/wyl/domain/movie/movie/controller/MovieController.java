@@ -1,12 +1,11 @@
 package com.jupiter.wyl.domain.movie.movie.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
+@Tag(name="MovieController", description = "Movie")
 public class MovieController {
 
     @GetMapping("/test")
