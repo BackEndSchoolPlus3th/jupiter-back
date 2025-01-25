@@ -1,4 +1,43 @@
 package com.jupiter.wyl.domain.movie.movie.entity;
 
-public class Movie {
+import com.jupiter.wyl.global.jpa.BaseEntity;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Builder
+@AllArgsConstructor
+public class Movie extends BaseEntity {
+    @Id
+    Long id; //이미 id가 api 가 있어서 자동 할당 받을 필요가 없다고 생각했습니다.
+    @Column(length = 512)
+    private String overview;
+    private LocalDate release_date;
+    private String title;
+    private float vote_average;
+
+    private String popularity;
+    private String poster_path;
+    private int vote_count;
+    private String original_language;
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MovieGenre> movieGenreList;
+
+    @OneToMany
+    List<MovieReview>  movieReviewList;
+
+public Movie(){
+
+}
+    public void addMovieGenre(MovieGenre movieGenre) {
+        movieGenreList.add(movieGenre);
+        movieGenre.setMovie(this);
+    }
 }
