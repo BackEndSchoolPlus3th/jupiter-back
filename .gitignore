@@ -133,3 +133,10 @@ terraform.rc
 
 application-secret.yml
 db_dev.*
+
+# MongoDB 데이터 폴더 무시
+data/
+data/*
+log/
+log/*
+*.log
