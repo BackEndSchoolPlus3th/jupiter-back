@@ -9,11 +9,8 @@ services:
       - '9200'
       - '9300'
   mongodb:
-    # 사용할 이미지
     image: mongo
-    # 컨테이너 실행 시 재시작
     restart: always
-    # 컨테이너명 설정
     container_name: mongodb
     # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
     ports:
@@ -22,7 +19,7 @@ services:
     environment:
       # MongoDB 계정 및 패스워드 설정 옵션
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_ROOT_PASSWORD: 1234
     # 볼륨 설정
     volumes:
       - ./data/mongodb:/data/db
