@@ -132,3 +132,6 @@ override.tf.json
 terraform.rc
 
 application-secret.yml
+db_dev.*
+
+db/

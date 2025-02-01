@@ -4,6 +4,7 @@ import com.jupiter.wyl.global.jpa.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Entity
 @Builder
+@Getter
 @AllArgsConstructor
 public class Movie extends BaseEntity {
     @Id
@@ -26,6 +28,12 @@ public class Movie extends BaseEntity {
     private String poster_path;
     private int vote_count;
     private String original_language;
+    @Column(length = 512)
+    private String keywords;
+    private String status;
+    @Column(length = 512)
+    private String actors;
+    private String director;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MovieGenre> movieGenreList;
