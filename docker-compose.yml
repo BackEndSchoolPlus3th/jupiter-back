@@ -1,0 +1,22 @@
+name: jupiter-back
+services:
+  mariadb:
+    image: mysql:9.1.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root123414
+      MYSQL_DATABASE: exam_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/:/var/lib/mysql
+
+  elasticsearch:
+    image: 'docker.elastic.co/elasticsearch/elasticsearch:7.17.10'
+    environment:
+      - 'ELASTIC_PASSWORD=secret'
+      - 'discovery.type=single-node'
+      - 'xpack.security.enabled=false'
+    ports:
+      - '9200'
+      - '9300'

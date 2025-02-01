@@ -1,17 +1,23 @@
 package com.jupiter.wyl.domain.movie.movie.controller;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import com.jupiter.wyl.domain.movie.movie.dto.response.MovieDto;
+import com.jupiter.wyl.domain.movie.movie.service.MovieService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
+@RequestMapping("/movie")
 @RestController
-@Tag(name="MovieController", description = "Movie")
+@RequiredArgsConstructor
 public class MovieController {
+    private final MovieService movieService;
 
-    @GetMapping("/test")
-    @ResponseBody
-    public String controllerTest() {
-        return "test";
+    @GetMapping
+    public List<MovieDto> findAllMovies(){
+        List<MovieDto> movieDtos = movieService.findAll();
+        return movieDtos;
     }
-
 }
