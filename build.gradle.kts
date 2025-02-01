@@ -29,6 +29,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-websocket")
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 	compileOnly("org.projectlombok:lombok")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 	annotationProcessor("org.projectlombok:lombok")
