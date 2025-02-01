@@ -134,4 +134,15 @@ terraform.rc
 application-secret.yml
 db_dev.*
 
+#db파일 무시
 db/
+
+#MongoDB 데이터 폴더 무시
+data/
+data/*
+log/
+log/*
+*.log
+
+#logstash 데이터 폴더 무시
+logstash/
