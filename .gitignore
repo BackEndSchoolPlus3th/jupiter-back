@@ -140,3 +140,6 @@ data/*
 log/
 log/*
 *.log
+
+# logstash 데이터 폴더 무시
+logstash/
