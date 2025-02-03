@@ -22,6 +22,11 @@ spring:
         format_sql: true
         highlight: true
         use_sql_comments: true
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/
+  websocket:
+    enabled: true
 logging:
   level:
     com.jupiter.wyl: DEBUG
