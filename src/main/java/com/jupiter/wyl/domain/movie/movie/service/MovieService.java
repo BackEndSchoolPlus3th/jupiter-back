@@ -31,6 +31,7 @@ import java.util.Optional;
 public class MovieService {
     private final MovieRepository movieRepository;
     private final MovieGenreService movieGenreService;
+
     @Value("${tmdb.key}")
     private String key;
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -65,7 +66,6 @@ public class MovieService {
                 }
             }
 
-
             StringBuilder actors = new StringBuilder();
             List<MovieDetailResponseDto.CastMember> casts = movieDetailResponseDto.getCredits().getCast();
             if(casts!=null){
@@ -76,11 +76,13 @@ public class MovieService {
                 }
             }
 
-
             Movie movie = Movie.builder().id(e.getId()).
                     overview(e.getOverview().length()>512?e.getOverview().substring(512):e.getOverview()).
-                    release_date(e.getRelease_date()).title(e.getTitle()).vote_average(e.getVote_average()).
-                    status(status).
+                    release_date(e.getRelease_date()).
+                    title(e.getTitle()).vote_average(e.getVote_average()).
+                    status(status).poster_path(e.getPoster_path()).
+                    original_country(!movieDetailResponseDto.getOriginCountry().isEmpty() ?
+                            movieDetailResponseDto.getOriginCountry().getFirst() :"").
                     keywords(keywords.toString()).
                     actors(actors.toString()).director(director).
                     movieGenreList(new ArrayList<>()).
@@ -96,7 +98,6 @@ public class MovieService {
             movieRepository.save(movie);
 
         }
-
         System.out.println("더미 데이터 저장");
     }
 
@@ -112,8 +113,10 @@ public class MovieService {
                                 vote_average(e.getVote_average()).
                                 popularity(e.getPopularity()).
                                 poster_path(e.getPoster_path()).
+                                release_date(e.getRelease_date()).
                                 vote_count(e.getVote_count()).
                                 original_language(e.getOriginal_language()).
+                                original_country(findCountryName(e.getOriginal_country())).
                                 genres(Arrays.toString(e.getMovieGenreList().toArray())).
                                 build()
                 )
@@ -121,6 +124,70 @@ public class MovieService {
 
         return movieDtos;
     }
+    static String findCountryName(String code){
+        if(code==null)
+            return "";
+        String countryName = switch (code) {
+            case "KR" -> "대한민국";
+            case "AF" -> "아프가니스탄";
+            case "AM" -> "아르메니아";
+            case "AZ" -> "아제르바이잔";
+            case "BH" -> "바레인";
+            case "BD" -> "방글라데시";
+            case "BT" -> "부탄";
+            case "CN" -> "중국";
+            case "GE" -> "조지아";
+            case "IN" -> "인도";
+            case "GB" -> "영국";
+            case "FR" -> "프랑스";
+            case "DE" -> "독일";
+            case "MX" -> "멕시코";
+            case "ID" -> "인도네시아";
+            case "RU" -> "러시아";
+            case "ES" -> "스페인";
+            case "IT" -> "이탈리아";
+            case "JP" -> "일본";
 
+            // 유럽
+            case "AL" -> "알바니아";
+            case "AD" -> "안도라";
+            case "AT" -> "오스트리아";
+            case "BE" -> "벨기에";
+            case "BG" -> "불가리아";
+            case "HR" -> "크로아티아";
+            case "CY" -> "키프로스";
+
+            // 아프리카
+            case "DZ" -> "알제리";
+            case "AO" -> "앙골라";
+            case "BJ" -> "베냉";
+            case "BW" -> "보츠와나";
+            case "BF" -> "부르키나파소";
+            case "BI" -> "부룬디";
+            case "GH" -> "가나";
+
+            // 아메리카
+            case "US" -> "미국";
+            case "CA" -> "캐나다";
+            case "BR" -> "브라질";
+            case "AR" -> "아르헨티나";
+            case "CL" -> "칠레";
+            case "CO" -> "콜롬비아";
+
+            // 오세아니아
+            case "AU" -> "호주";
+            case "NZ" -> "뉴질랜드";
+            case "FJ" -> "피지";
+            case "PG" -> "파푸아뉴기니";
+
+            // 특수 사례
+            case "TW" -> "대만(중국 영토)";
+            case "HK" -> "홍콩(중국 특별행정구)";
+            case "MO" -> "마카오(중국 특별행정구)";
+            default -> "알 수 없는 국가";
+        };
+
+        return countryName;
+    }
 
 }
