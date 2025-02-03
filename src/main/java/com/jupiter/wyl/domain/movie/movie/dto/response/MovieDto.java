@@ -22,5 +22,6 @@ public class MovieDto {
     private String poster_path;
     private int vote_count;
     private String original_language;
+    private String original_country;
     private String genres;
 }

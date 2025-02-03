@@ -30,7 +30,22 @@ public class MovieDetailResponseDto
     private String backdropPath;
     private List<Genre> genres;
     private Credits credits;
+    @JsonProperty("origin_country")
+    private List<String> originCountry;
+    @JsonProperty("belongs_to_collection")
+    private CollectionInfo collectionInfo;
 
+
+    @Getter
+    @Setter
+    public static class CollectionInfo {
+        @JsonProperty("poster_path")
+        private String posterPath;
+
+        public String getPosterPath() {
+            return posterPath;
+        }
+    }
 
     @Getter
     @Setter

@@ -34,6 +34,7 @@ public class Movie extends BaseEntity {
     @Column(length = 512)
     private String actors;
     private String director;
+    private String original_country;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MovieGenre> movieGenreList;
