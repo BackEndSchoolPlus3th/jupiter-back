@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequestMapping("/movie")
+@RequestMapping("/api/v1/movie")
 @RestController
 @RequiredArgsConstructor
 public class MovieController {
@@ -20,4 +20,11 @@ public class MovieController {
         List<MovieDto> movieDtos = movieService.findAll();
         return movieDtos;
     }
+
+    @GetMapping("/search")
+    public List<MovieDto> findByTitle(){
+        List<MovieDto> movieSearchDtos = movieService.searchByTitle("글래디에이터");
+        return movieSearchDtos;
+    }
+
 }

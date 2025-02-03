@@ -10,7 +10,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
-
 public class MovieDto {
     Long id;
     private String overview;

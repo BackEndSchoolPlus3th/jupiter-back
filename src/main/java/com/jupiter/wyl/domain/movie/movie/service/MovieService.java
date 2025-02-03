@@ -1,29 +1,22 @@
 package com.jupiter.wyl.domain.movie.movie.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jupiter.wyl.domain.movie.movie.dto.response.*;
 import com.jupiter.wyl.domain.movie.movie.entity.Movie;
 import com.jupiter.wyl.domain.movie.movie.entity.MovieGenre;
-import com.jupiter.wyl.domain.movie.movie.repository.MovieRepository;
+import com.jupiter.wyl.domain.movie.movie.repository.jpa.MovieRepository;
+import com.jupiter.wyl.domain.movie.movie.repository.elastic.MovieSearchRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -31,6 +24,35 @@ import java.util.Optional;
 public class MovieService {
     private final MovieRepository movieRepository;
     private final MovieGenreService movieGenreService;
+    @Autowired
+    private final MovieSearchRepository movieSearchRepository; // Elasticsearch에서 검색
+
+    // title로 영화를 검색하고 MovieSearchDto로 변환하여 반환
+    public List<MovieDto> searchByTitle(String title) {
+        List<MovieDto> movieSearchDtos = new ArrayList<>();
+
+        // Elasticsearch에서 title로 검색
+        List<Movie> movies = movieSearchRepository.findByTitleContaining(title);
+
+        // 검색된 결과를 MovieSearchDto로 변환
+        for (Movie movie : movies) {
+            MovieDto dto = MovieDto.builder()
+                    .id(movie.getId())
+                    .overview(movie.getOverview())
+                    .release_date(movie.getRelease_date())  // LocalDate 그대로 사용
+                    .title(movie.getTitle())
+                    .vote_average(movie.getVote_average())
+                    .popularity(movie.getPopularity())
+                    .poster_path(movie.getPoster_path())
+                    .vote_count(movie.getVote_count())
+                    .original_language(movie.getOriginal_language())
+                    .original_country(movie.getOriginal_country())
+                    .build();
+
+            movieSearchDtos.add(dto);
+        }
+        return movieSearchDtos;
+    }
 
     @Value("${tmdb.key}")
     private String key;
