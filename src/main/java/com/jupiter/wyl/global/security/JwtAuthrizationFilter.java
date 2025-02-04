@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -30,13 +31,13 @@ public class JwtAuthrizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        String accessToken = _getCookie("accessToken");
+        String accessToken = _getCookie("accessToken").orElse("");
         // accessToken 검증 or refreshToken 발급
         if (!accessToken.isBlank()) {
             // 토큰 유효기간 검증
             if (!memberService.validateToken(accessToken)) {
                 // refreshToken 재발급 검증
-                String refreshToken = _getCookie("refreshToken");
+                String refreshToken = _getCookie("refreshToken").orElse("");
                 RsData<String> rs = memberService.refreshAccessToken(refreshToken);
                 _addHeaderCookie("accessToken", rs.getData());
             }
@@ -47,13 +48,16 @@ public class JwtAuthrizationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-    private String _getCookie(String name) {
+    private Optional<String> _getCookie(String name) {
         Cookie[] cookies = req.getCookies();
+
+        if (cookies == null) {
+            return Optional.empty(); // 쿠키가 없으면 빈 값 반환
+        }
         return Arrays.stream(cookies)
                 .filter(cookie -> cookie.getName().equals(name))
                 .findFirst()
-                .map(Cookie::getValue)
-                .orElse("");
+                .map(Cookie::getValue);
     }
     private void _addHeaderCookie(String tokenName, String token) {
         ResponseCookie cookie = ResponseCookie.from(tokenName, token)
