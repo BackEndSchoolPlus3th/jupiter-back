@@ -1,8 +1,6 @@
 server:
   port: 8090
 spring:
-  config:
-    import: "classpath:application-secret.yml"
   output:
     ansi:
       enabled: ALWAYS
