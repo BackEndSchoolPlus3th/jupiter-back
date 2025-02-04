@@ -24,35 +24,6 @@ import java.util.List;
 public class MovieService {
     private final MovieRepository movieRepository;
     private final MovieGenreService movieGenreService;
-    @Autowired
-    private final MovieSearchRepository movieSearchRepository; // Elasticsearch에서 검색
-
-    // title로 영화를 검색하고 MovieSearchDto로 변환하여 반환
-    public List<MovieDto> searchByTitle(String title) {
-        List<MovieDto> movieSearchDtos = new ArrayList<>();
-
-        // Elasticsearch에서 title로 검색
-        List<Movie> movies = movieSearchRepository.findByTitleContaining(title);
-
-        // 검색된 결과를 MovieSearchDto로 변환
-        for (Movie movie : movies) {
-            MovieDto dto = MovieDto.builder()
-                    .id(movie.getId())
-                    .overview(movie.getOverview())
-                    .release_date(movie.getRelease_date())  // LocalDate 그대로 사용
-                    .title(movie.getTitle())
-                    .vote_average(movie.getVote_average())
-                    .popularity(movie.getPopularity())
-                    .poster_path(movie.getPoster_path())
-                    .vote_count(movie.getVote_count())
-                    .original_language(movie.getOriginal_language())
-                    .original_country(movie.getOriginal_country())
-                    .build();
-
-            movieSearchDtos.add(dto);
-        }
-        return movieSearchDtos;
-    }
 
     @Value("${tmdb.key}")
     private String key;

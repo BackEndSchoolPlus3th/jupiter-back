@@ -1,6 +1,8 @@
 package com.jupiter.wyl.domain.movie.movie.controller;
 
 import com.jupiter.wyl.domain.movie.movie.dto.response.MovieDto;
+import com.jupiter.wyl.domain.movie.movie.dto.response.MovieSearchDto;
+import com.jupiter.wyl.domain.movie.movie.service.MovieSearchService;
 import com.jupiter.wyl.domain.movie.movie.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MovieController {
     private final MovieService movieService;
+    private final MovieSearchService movieSearchService;
 
     @GetMapping
     public List<MovieDto> findAllMovies(){
@@ -22,8 +25,8 @@ public class MovieController {
     }
 
     @GetMapping("/search")
-    public List<MovieDto> findByTitle(){
-        List<MovieDto> movieSearchDtos = movieService.searchByTitle("글래디에이터");
+    public List<MovieSearchDto> findByTitle(){
+        List<MovieSearchDto> movieSearchDtos = movieSearchService.searchByTitle("글래디에이터");
         return movieSearchDtos;
     }
 

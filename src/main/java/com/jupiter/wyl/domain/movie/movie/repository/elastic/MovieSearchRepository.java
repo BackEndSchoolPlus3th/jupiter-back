@@ -1,6 +1,7 @@
 package com.jupiter.wyl.domain.movie.movie.repository.elastic;
 
-import com.jupiter.wyl.domain.movie.movie.entity.Movie;
+import com.jupiter.wyl.domain.movie.movie.dto.response.MovieSearchDto;
+import com.jupiter.wyl.domain.movie.movie.document.Movie;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 import java.util.List;
