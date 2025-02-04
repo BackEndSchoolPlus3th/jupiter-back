@@ -23,11 +23,10 @@ public class MovieSearchService {
     @Autowired
     private final MovieSearchRepository movieSearchRepository; // Elasticsearch에서 검색
 
-    // title로 영화를 검색하고 MovieSearchDto로 변환하여 반환
-    public List<MovieSearchDto> searchByTitle(String title) {
+    public List<MovieSearchDto> findByTitleOrOverviewOrActorsOrDirector(String word) {
         List<MovieSearchDto> movieSearchDtos = new ArrayList<>();
 
-        movieSearchRepository.findByTitleContaining(title).forEach(movie ->
+        movieSearchRepository.findByTitleOrOverviewOrActorsOrDirector(word).forEach(movie ->
                 movieSearchDtos.add(
                         MovieSearchDto.builder()
                                 .id(movie.getId())
