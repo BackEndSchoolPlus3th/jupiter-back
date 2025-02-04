@@ -62,8 +62,8 @@ services:
     # 환경 변수 설정
     environment:
       # MongoDB 계정 및 패스워드 설정 옵션
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root123414
+      MONGO_INITDB_ROOT_USERNAME:
+      MONGO_INITDB_ROOT_PASSWORD:
     # 볼륨 설정
     volumes:
       - ./data/mongodb:/data/db
