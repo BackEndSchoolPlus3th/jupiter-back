@@ -1,11 +1,13 @@
 package com.jupiter.wyl.domain.movie.movie.controller;
 
+import com.jupiter.wyl.domain.movie.movie.dto.request.MovieSearchRequestDto;
 import com.jupiter.wyl.domain.movie.movie.dto.response.MovieDto;
 import com.jupiter.wyl.domain.movie.movie.dto.response.MovieSearchDto;
 import com.jupiter.wyl.domain.movie.movie.service.MovieSearchService;
 import com.jupiter.wyl.domain.movie.movie.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,8 +27,8 @@ public class MovieController {
     }
 
     @GetMapping("/search")
-    public List<MovieSearchDto> findByTitle(){
-        List<MovieSearchDto> movieSearchDtos = movieSearchService.searchByTitle("글래디에이터");
+    public List<MovieSearchDto> findByTitleOrOverviewOrActorsOrDirector(@RequestBody MovieSearchRequestDto movieSearchRequestDto){
+        List<MovieSearchDto> movieSearchDtos = movieSearchService.findByTitleOrOverviewOrActorsOrDirector(movieSearchRequestDto.getWord());
         return movieSearchDtos;
     }
 
