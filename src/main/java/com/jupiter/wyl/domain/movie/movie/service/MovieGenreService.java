@@ -1,11 +1,8 @@
 package com.jupiter.wyl.domain.movie.movie.service;
 
 import com.jupiter.wyl.domain.movie.movie.dto.response.MovieGenreResponseDto;
-import com.jupiter.wyl.domain.movie.movie.dto.response.MovieGenreResultResponseDto;
-import com.jupiter.wyl.domain.movie.movie.dto.response.MovieResponseDto;
-import com.jupiter.wyl.domain.movie.movie.entity.Movie;
 import com.jupiter.wyl.domain.movie.movie.entity.MovieGenre;
-import com.jupiter.wyl.domain.movie.movie.repository.MovieGenreRepository;
+import com.jupiter.wyl.domain.movie.movie.repository.jpa.MovieGenreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Transactional
