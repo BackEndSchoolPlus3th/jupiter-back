@@ -3,6 +3,7 @@ package com.jupiter.wyl.domain.main.controller;
 import com.jupiter.wyl.domain.main.dto.MovieMainDto;
 import com.jupiter.wyl.domain.main.service.MovieMainService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,11 +31,13 @@ public class ApiV1MovieMainController {
     }
 
     @GetMapping("/api/movies/popular")
+    @CrossOrigin(origins = "http://localhost:3000")
     public List<MovieMainDto> getPopularMovies() {
         return movieMainService.getPopularMovies();
     }
 
     @GetMapping("/api/movies/top-rated")
+    @CrossOrigin(origins = "http://localhost:3000")
     public List<MovieMainDto> getTopRatedMovies() {
         return movieMainService.getTopRatedMovies();
     }
