@@ -70,18 +70,38 @@ public class MovieMainService {
         }
     }
 
+    // DB에서 영화 가져오기
+    private List<MovieMainDto> getMoviesFromDatabase(String category) {
+        List<MovieMain> movies = movieMainRepository.findByCategory(category);
+        if (movies.isEmpty()) {
+            logger.warn("DB에 저장된 영화 데이터가 없습니다. 카테고리: {}", category);
+            return List.of();
+        }
+        // MovieMain을 MovieMainDto로 변환
+        return movies.stream()
+                .map(movie -> new MovieMainDto(movie.getId(), movie.getTitle(), movie.getOverview(), movie.getPosterPath()))
+                .collect(Collectors.toList());
+    }
 
     // Popular 영화 가져오기
     public List<MovieMainDto> getPopularMovies() {
         List<MovieMainDto> movies = fetchMoviesFromApi("popular");
-        saveMoviesToDatabase(movies, "popular"); // DB에 저장
+        if (movies.isEmpty()) {
+            // DB에 없으면 API에서 가져와서 저장
+            movies = fetchMoviesFromApi("popular");
+            saveMoviesToDatabase(movies, "popular");
+        }
         return movies;
     }
 
     // TopRated 영화 가져오기
     public List<MovieMainDto> getTopRatedMovies() {
         List<MovieMainDto> movies = fetchMoviesFromApi("top_rated");
-        saveMoviesToDatabase(movies, "top_rated"); // DB에 저장
+        if (movies.isEmpty()) {
+            // DB에 없으면 API에서 가져와서 저장
+            movies = fetchMoviesFromApi("top_rated");
+            saveMoviesToDatabase(movies, "top_rated");
+        }
         return movies;
     }
 }

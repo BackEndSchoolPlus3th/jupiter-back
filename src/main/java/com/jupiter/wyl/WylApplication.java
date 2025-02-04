@@ -10,7 +10,8 @@ import org.springframework.web.context.request.RequestContextListener;
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = {
 		"com.jupiter.wyl.domain.member.repository",
-		"com.jupiter.wyl.domain.movie.movie.repository.jpa"
+		"com.jupiter.wyl.domain.movie.movie.repository.jpa",
+		"com.jupiter.wyl.domain.main.repository"
 })
 @EnableElasticsearchRepositories(basePackages = "com.jupiter.wyl.domain.movie.movie.repository.elastic")
 public class WylApplication {
