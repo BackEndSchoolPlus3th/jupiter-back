@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -110,7 +111,9 @@ public class MovieService {
                                 vote_count(e.getVote_count()).
                                 original_language(e.getOriginal_language()).
                                 original_country(findCountryName(e.getOriginal_country())).
-                                genres(Arrays.toString(e.getMovieGenreList().toArray())).
+                                genres(String.valueOf(e.getMovieGenreList().stream()
+                                        .map(MovieGenre::getGenreName) // 장르 이름만 추출
+                                        .collect(Collectors.toList()))). // List<String>으로 변환
                                 build()
                 )
         );
