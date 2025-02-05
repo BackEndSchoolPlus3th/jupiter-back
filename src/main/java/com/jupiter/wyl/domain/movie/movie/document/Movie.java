@@ -26,6 +26,8 @@ public class Movie {
     private String status;
     private String director;
     private String popularity;
+    private String poster_path;
+
     private String original_language;
     private String original_country;
 
