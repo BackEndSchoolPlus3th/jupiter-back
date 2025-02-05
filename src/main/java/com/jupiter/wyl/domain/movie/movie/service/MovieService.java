@@ -89,6 +89,7 @@ public class MovieService {
                         genreName(movieGenreService.getValue(genre)).build();
                 movie.addMovieGenre(movieGenre);
             }
+            movie.setGenresFromMovieGenres();
             movieRepository.save(movie);
 
         }

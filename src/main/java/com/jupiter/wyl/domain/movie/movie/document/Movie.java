@@ -3,56 +3,54 @@ package com.jupiter.wyl.domain.movie.movie.document;
 import com.jupiter.wyl.domain.movie.movie.entity.MovieGenre;
 import com.jupiter.wyl.domain.movie.movie.entity.MovieReview;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Builder
 @Getter
+@Setter
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Document(indexName = "movie")
 public class Movie {
     @Id
-    Long id; //이미 id가 api 가 있어서 자동 할당 받을 필요가 없다고 생각했습니다.
-    @Column(length = 512)
+    private Long id; // API에서 제공하는 ID 사용
+
     private String overview;
     private String release_date;
     private String title;
     private float vote_average;
-
     private String status;
     private String director;
     private String popularity;
     private String poster_path;
-
     private String original_language;
     private String original_country;
 
-    @Column(length = 512)
-    private String keywords;
+    private List<String> genres;  // ⬅️ 장르를 List<String>로 변경
+    private List<String> keywords; // ⬅️ 키워드도 리스트로 변경
 
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MovieGenre> movieGenreList;
+    private List<MovieReview> movieReviewList;
 
-    @OneToMany
-    List<MovieReview>  movieReviewList;
-
-    public Movie(){
-
-    }
     public void addMovieGenre(MovieGenre movieGenre) {
-        movieGenreList.add(movieGenre);
+        if (movieGenreList != null) {
+            movieGenreList.add(movieGenre);
+        }
     }
 
-    public String getMovieGenresName(){
-        StringBuilder sb = new StringBuilder();
-        for(MovieGenre movieGenre : movieGenreList){
-            sb.append(movieGenre.getGenreName());
-            sb.append(",");
-        }
-        return sb.toString();
+    public List<String> getMovieGenres() {
+        return movieGenreList.stream()
+                .map(MovieGenre::getGenreName)
+                .toList(); // ⬅️ 문자열이 아니라 리스트로 변환
+    }
+
+    public String getMovieGenresName() {
+        return movieGenreList.stream()
+                .map(MovieGenre::getGenreName)
+                .collect(Collectors.joining(","));
     }
 }
