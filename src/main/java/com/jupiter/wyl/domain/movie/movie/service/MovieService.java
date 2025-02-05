@@ -114,6 +114,7 @@ public class MovieService {
                                 genres(String.valueOf(e.getMovieGenreList().stream()
                                         .map(MovieGenre::getGenreName) // 장르 이름만 추출
                                         .collect(Collectors.toList()))). // List<String>으로 변환
+                                keywords(e.getKeywords()).
                                 build()
                 )
         );

@@ -23,17 +23,14 @@ public class Movie {
     private String title;
     private float vote_average;
 
+    private String status;
+    private String director;
     private String popularity;
-    private String poster_path;
-    private int vote_count;
     private String original_language;
+    private String original_country;
+
     @Column(length = 512)
     private String keywords;
-    private String status;
-    @Column(length = 512)
-    private String actors;
-    private String director;
-    private String original_country;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MovieGenre> movieGenreList;
@@ -46,5 +43,14 @@ public class Movie {
     }
     public void addMovieGenre(MovieGenre movieGenre) {
         movieGenreList.add(movieGenre);
+    }
+
+    public String getMovieGenresName(){
+        StringBuilder sb = new StringBuilder();
+        for(MovieGenre movieGenre : movieGenreList){
+            sb.append(movieGenre.getGenreName());
+            sb.append(",");
+        }
+        return sb.toString();
     }
 }

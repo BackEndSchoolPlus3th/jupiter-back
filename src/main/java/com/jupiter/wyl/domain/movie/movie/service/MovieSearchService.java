@@ -36,11 +36,9 @@ public class MovieSearchService {
                                 .title(movie.getTitle())
                                 .vote_average(movie.getVote_average())
                                 .popularity(movie.getPopularity())
-                                .poster_path(movie.getPoster_path())
-                                .vote_count(movie.getVote_count())
                                 .original_language(movie.getOriginal_language())
                                 .original_country(findCountryName(movie.getOriginal_country()))
-                                .genres("임시")
+                                .genres(movie.getMovieGenresName())
                                 .build()
                 )
         );

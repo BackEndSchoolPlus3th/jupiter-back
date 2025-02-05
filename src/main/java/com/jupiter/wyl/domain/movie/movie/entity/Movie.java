@@ -46,11 +46,21 @@ public class Movie {
     @OneToMany
     List<MovieReview>  movieReviewList;
 
-public Movie(){
+    public Movie(){
 
-}
+    }
+
     public void addMovieGenre(MovieGenre movieGenre) {
         movieGenreList.add(movieGenre);
         movieGenre.setMovie(this);
+    }
+
+    public String getMovieGenres(){
+        StringBuilder sb = new StringBuilder();
+        for(MovieGenre movieGenre : movieGenreList){
+            sb.append(movieGenre.getGenreName());
+            sb.append(",");
+        }
+        return sb.toString();
     }
 }
