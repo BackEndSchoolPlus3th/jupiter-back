@@ -12,12 +12,9 @@ public class MovieMainDto {
     private Long id;
     private String title;
     private String overview;
-    private String posterPath;
 
     @JsonProperty("poster_path")
-    public String getPosterPath() {
-        return posterPath;
-    }
+    public String posterPath;
 
     public MovieMainDto() {}
 

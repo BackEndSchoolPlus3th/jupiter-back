@@ -1,6 +1,12 @@
 server:
   port: 8090
 spring:
+  batch:
+    jdbc:
+      initialize-schema: never
+    job:
+      enabled: false
+      name: movieBatchJob
   config:
     import: application-secret.yml
   output:
@@ -37,6 +43,7 @@ logging:
     org.hibernate.type.blind: TRACE
     org.hibernate.type.extract: TRACE
     org.springframework.transaction.interceptor: TRACE
+    org.springframework: DEBUG
 custom:
   dev:
     cookieDomain: localhost
