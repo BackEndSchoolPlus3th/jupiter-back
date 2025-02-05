@@ -7,6 +7,7 @@ import com.jupiter.wyl.domain.main.repository.MovieMainRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -95,5 +96,22 @@ public class MovieMainService {
     // TopRated 영화 가져오기
     public List<MovieMainDto> getTopRatedMovies() {
         return getMovies("top_rated");
+    }
+
+    @Scheduled(cron = "0 00 17 * * ?")  // cron 표현식: 매일 17:00에 실행
+    @Transactional
+    public void scheduledSaveMovies() {
+        try {
+            // Popular 영화와 TopRated 영화를 각각 가져와서 DB에 저장
+            List<MovieMainDto> popularMovies = fetchMoviesFromApi("popular");
+            saveMoviesToDatabase(popularMovies, "popular");
+
+            List<MovieMainDto> topRatedMovies = fetchMoviesFromApi("top_rated");
+            saveMoviesToDatabase(topRatedMovies, "top_rated");
+
+            logger.info("영화 데이터를 스케줄러로 성공적으로 저장했습니다.");
+        } catch (Exception e) {
+            logger.error("스케줄러 작업 중 오류 발생: {}", e.getMessage());
+        }
     }
 }

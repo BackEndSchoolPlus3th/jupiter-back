@@ -1,5 +1,6 @@
 server:
   port: 8090
+  timezone: Asia/Seoul
 spring:
   batch:
     jdbc:

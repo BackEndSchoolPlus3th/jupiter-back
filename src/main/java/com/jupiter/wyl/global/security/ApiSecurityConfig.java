@@ -28,6 +28,7 @@ public class ApiSecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/*/member/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/*/member/logout").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/*/member/me").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/*/chat/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable()) // csrf 토큰 끄기
