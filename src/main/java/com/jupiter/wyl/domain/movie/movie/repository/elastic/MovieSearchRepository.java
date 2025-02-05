@@ -28,6 +28,7 @@ public interface MovieSearchRepository extends ElasticsearchRepository<Movie, Lo
                             "overview": "*#{#word}*"
                         }
                     },
+                    
                     {
                         "match": {
                             "actors": "#{#word}"
