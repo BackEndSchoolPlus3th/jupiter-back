@@ -29,7 +29,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-websocket")
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
-	implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
@@ -49,6 +49,11 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
+	// 배치
+	implementation("org.springframework.boot:spring-boot-starter-batch")
+	implementation("org.springframework.batch:spring-batch-core:5.0.0")
+	testImplementation("org.springframework.batch:spring-batch-test")
 }
 
 tasks.withType<Test> {

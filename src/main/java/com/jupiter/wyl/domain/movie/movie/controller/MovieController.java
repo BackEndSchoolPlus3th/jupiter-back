@@ -37,7 +37,6 @@ public class MovieController {
         return movieSearchDtos;
     }
 
-
     @GetMapping("/{id}")
     public MovieDto getMovie(@PathVariable("id") Long id) {
         MovieDto movie = movieService.findById(id);

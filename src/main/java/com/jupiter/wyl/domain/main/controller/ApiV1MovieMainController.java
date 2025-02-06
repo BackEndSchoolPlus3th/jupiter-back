@@ -5,6 +5,7 @@ import com.jupiter.wyl.domain.main.service.MovieMainService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -42,9 +43,9 @@ public class ApiV1MovieMainController {
         return movieMainService.getTopRatedMovies();
     }
 
-//    @GetMapping("/api/v1/movie/like-genre")
-//    @CrossOrigin(origins = "http://localhost:3000")
-//    public List<MovieMainDto> getLikeGenreMovies() {
-//        return movieMainService.getLikeGenreMovies();
-//    }
+    @GetMapping("/api/v1/movie/genre/{genreId}")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public List<MovieMainDto> getMoviesByGenre(@PathVariable String genreId) {
+        return movieMainService.getMoviesByGenre(genreId);
+    }
 }
