@@ -46,9 +46,9 @@ public class Movie {
     @OneToMany
     List<MovieReview>  movieReviewList;
 
-public Movie(){
+    public Movie(){
 
-}
+    }
     public void addMovieGenre(MovieGenre movieGenre) {
         movieGenreList.add(movieGenre);
         movieGenre.setMovie(this);

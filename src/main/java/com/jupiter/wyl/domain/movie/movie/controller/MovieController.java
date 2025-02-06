@@ -1,13 +1,13 @@
 package com.jupiter.wyl.domain.movie.movie.controller;
 
+import com.jupiter.wyl.domain.movie.movie.dto.request.ReviewRequest;
+import com.jupiter.wyl.domain.movie.movie.dto.response.MovieDetailResponseDto;
 import com.jupiter.wyl.domain.movie.movie.dto.response.MovieDto;
 import com.jupiter.wyl.domain.movie.movie.dto.response.MovieSearchDto;
 import com.jupiter.wyl.domain.movie.movie.service.MovieSearchService;
 import com.jupiter.wyl.domain.movie.movie.service.MovieService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,4 +30,23 @@ public class MovieController {
         return movieSearchDtos;
     }
 
+
+    @GetMapping("/{id}")
+    public MovieDto getMovie(@PathVariable("id") Long id) {
+        MovieDto movie = movieService.findById(id);
+        //System.out.println(movie.toString());
+        return movie;
+    }
+
+//    @GetMapping("/review")
+//    public MovieDto getMovieReview() {
+//        MovieDto
+//    }
+
+    @PostMapping("/review/write")
+    public String receiveReview(@RequestBody ReviewRequest reviewRequest) {
+        System.out.println("Received review: " + reviewRequest.getContent());
+        // db에 저장 필요
+        return "리뷰가 성공적으로 저장되었습니다!";
+    }
 }
