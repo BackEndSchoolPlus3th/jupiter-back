@@ -45,7 +45,7 @@ public class ApiV1ChatBotController {
 
     // 이전 메시지 불러오기
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/api/chat/previousMessages")
+    @GetMapping("/api/v1/chat/previousMessages")
     public ResponseEntity<List<Message>> getPreviousMessages(@RequestParam(name = "userId") String userId) {
         try {
             List<Message> messages = chatBotService.getPreviousMessages(userId);
