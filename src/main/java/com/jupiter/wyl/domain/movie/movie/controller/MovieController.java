@@ -29,4 +29,10 @@ public class MovieController {
         return movieSearchDtos;
     }
 
+    @GetMapping("/search/popular")
+    public List<MovieSearchDto> findByTitleOrOverviewOrActorsOrDirectorPopular(@RequestParam("word") String word){
+        List<MovieSearchDto> movieSearchDtos = movieSearchService.findByTitleOrOverviewOrActorsOrDirectorPopular(word);
+        return movieSearchDtos;
+    }
+
 }
