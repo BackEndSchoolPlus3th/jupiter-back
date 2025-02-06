@@ -21,15 +21,17 @@ public class ApiSecurityConfig {
     SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/api/**")
-                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers(HttpMethod.GET, "/api/*/movie").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/*/movie/*").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/*/member/signup").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/*/member/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/*/member/logout").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/*/member/me").permitAll()
-                        .anyRequest().authenticated()
-                )
+                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
+                        .requestMatchers(new AntPathRequestMatcher("/api/**")).permitAll())
+//                        .requestMatchers(HttpMethod.GET, "/api/*/movie").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/api/*/movie/*").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/api/*/movie/*").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/api/*/member/signup").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/api/*/member/login").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/api/*/member/logout").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/api/*/member/me").permitAll()
+//                        .anyRequest().authenticated()
+
                 .csrf(csrf -> csrf.disable()) // csrf 토큰 끄기
                 .httpBasic(httpBasic -> httpBasic.disable()) // httpBasic 로그인 방식 끄기
                 .formLogin(formLogin -> formLogin.disable()) // 폼 로그인 방식 끄기
