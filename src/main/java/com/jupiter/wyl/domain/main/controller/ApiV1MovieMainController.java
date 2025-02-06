@@ -34,7 +34,7 @@ public class ApiV1MovieMainController {
     }
 
     @GetMapping("/api/v1/movie/popular")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:5173")
     public List<MovieMainDto> getPopularMovies() {
         return movieMainService.getPopularMovies();
     }

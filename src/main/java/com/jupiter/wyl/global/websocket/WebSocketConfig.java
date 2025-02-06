@@ -19,7 +19,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/chat")  // 클라이언트가 연결할 엔드포인트
-                .setAllowedOrigins("http://localhost:3000")  // 클라이언트 URL을 정확히 허용
+                .setAllowedOrigins("http://localhost:5173")  // 클라이언트 URL을 정확히 허용
                 .withSockJS();
     }
 }
