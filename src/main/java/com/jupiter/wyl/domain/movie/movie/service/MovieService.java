@@ -112,9 +112,7 @@ public class MovieService {
                                 vote_count(e.getVote_count()).
                                 original_language(e.getOriginal_language()).
                                 original_country(findCountryName(e.getOriginal_country())).
-                                genres(String.valueOf(e.getMovieGenreList().stream()
-                                        .map(MovieGenre::getGenreName) // 장르 이름만 추출
-                                        .collect(Collectors.toList()))). // List<String>으로 변환
+                                genres(Arrays.toString(e.getMovieGenreList().toArray())).
                                 keywords(e.getKeywords()).
                                 build()
                 )

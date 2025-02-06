@@ -30,27 +30,20 @@ public class Movie {
     private String original_language;
     private String original_country;
 
-    private List<String> genres;  // ⬅️ 장르를 List<String>로 변경
+    private String genres;  // ⬅️ 장르를 List<String>로 변경
     private List<String> keywords; // ⬅️ 키워드도 리스트로 변경
 
-    private List<MovieGenre> movieGenreList;
     private List<MovieReview> movieReviewList;
 
+    private List<MovieGenre> movieGenreList;
     public void addMovieGenre(MovieGenre movieGenre) {
         if (movieGenreList != null) {
             movieGenreList.add(movieGenre);
         }
     }
-
     public List<String> getMovieGenres() {
         return movieGenreList.stream()
                 .map(MovieGenre::getGenreName)
                 .toList(); // ⬅️ 문자열이 아니라 리스트로 변환
-    }
-
-    public String getMovieGenresName() {
-        return movieGenreList.stream()
-                .map(MovieGenre::getGenreName)
-                .collect(Collectors.joining(","));
     }
 }

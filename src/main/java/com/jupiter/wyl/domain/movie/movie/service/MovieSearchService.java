@@ -35,9 +35,10 @@ public class MovieSearchService {
                                 .title(movie.getTitle())
                                 .vote_average(movie.getVote_average())
                                 .popularity(movie.getPopularity())
+                                .poster_path(movie.getPoster_path())
                                 .original_language(movie.getOriginal_language())
                                 .original_country(findCountryName(movie.getOriginal_country()))
-                                .genres(movie.getMovieGenresName())
+                                .genres(movie.getGenres())
                                 .build()
                 )
         );
