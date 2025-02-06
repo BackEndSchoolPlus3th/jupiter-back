@@ -4,8 +4,11 @@ import com.jupiter.wyl.domain.main.dto.MovieMainDto;
 import com.jupiter.wyl.domain.main.dto.response.MovieMainResponse;
 import com.jupiter.wyl.domain.main.entity.MovieMain;
 import com.jupiter.wyl.domain.main.repository.MovieMainRepository;
+import com.jupiter.wyl.domain.movie.movie.repository.elastic.MovieSearchRepository;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class MovieMainService {
 
     private static final Logger logger = LoggerFactory.getLogger(MovieMainService.class);
@@ -25,11 +29,8 @@ public class MovieMainService {
 
     private final RestTemplate restTemplate;
     private final MovieMainRepository movieMainRepository;
-
-    public MovieMainService(RestTemplate restTemplate, MovieMainRepository movieMainRepository) {
-        this.restTemplate = restTemplate;
-        this.movieMainRepository = movieMainRepository;
-    }
+    @Autowired
+    private final MovieSearchRepository movieSearchRepository;
 
     private static final String BASE_URL = "https://api.themoviedb.org/3";
 
@@ -82,6 +83,11 @@ public class MovieMainService {
     public List<MovieMainDto> getTopRatedMovies() {
         List<MovieMainDto> movies = fetchMoviesFromApi("top_rated");
         saveMoviesToDatabase(movies, "top_rated"); // DB에 저장
+        return movies;
+    }
+
+    public List<MovieMainDto> getLikeGenreMovies() {
+        List<MovieMainDto> movies = fetchMoviesFromApi("top_rated");
         return movies;
     }
 }
