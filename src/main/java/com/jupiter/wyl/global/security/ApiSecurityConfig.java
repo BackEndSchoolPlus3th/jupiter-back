@@ -31,7 +31,6 @@ public class ApiSecurityConfig {
 //                        .requestMatchers(HttpMethod.GET, "/api/*/member/logout").permitAll()
 //                        .requestMatchers(HttpMethod.GET, "/api/*/member/me").permitAll()
 //                        .anyRequest().authenticated()
-
                 .csrf(csrf -> csrf.disable()) // csrf 토큰 끄기
                 .httpBasic(httpBasic -> httpBasic.disable()) // httpBasic 로그인 방식 끄기
                 .formLogin(formLogin -> formLogin.disable()) // 폼 로그인 방식 끄기

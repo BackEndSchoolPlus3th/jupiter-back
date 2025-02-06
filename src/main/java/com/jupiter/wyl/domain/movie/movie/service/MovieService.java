@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Optional;
 
 @Service
@@ -87,6 +88,7 @@ public class MovieService {
                         genreName(movieGenreService.getValue(genre)).build();
                 movie.addMovieGenre(movieGenre);
             }
+            movie.setGenresFromMovieGenres();
             movieRepository.save(movie);
 
         }
@@ -110,6 +112,7 @@ public class MovieService {
                                 original_language(e.getOriginal_language()).
                                 original_country(findCountryName(e.getOriginal_country())).
                                 genres(Arrays.toString(e.getMovieGenreList().toArray())).
+                                keywords(e.getKeywords()).
                                 build()
                 )
         );

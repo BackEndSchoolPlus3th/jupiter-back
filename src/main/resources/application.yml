@@ -1,5 +1,6 @@
 server:
   port: 8090
+  timezone: Asia/Seoul
 spring:
   config:
     import: application-secret.yml
@@ -12,7 +13,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/exam_db
     username: root
-    password: 1234
+    password: root123414
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     open-in-view: false
@@ -37,6 +38,7 @@ logging:
     org.hibernate.type.blind: TRACE
     org.hibernate.type.extract: TRACE
     org.springframework.transaction.interceptor: TRACE
+    org.springframework: DEBUG
 custom:
   dev:
     cookieDomain: localhost

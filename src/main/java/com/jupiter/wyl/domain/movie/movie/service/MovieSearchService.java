@@ -36,6 +36,28 @@ public class MovieSearchService {
                                 .vote_average(movie.getVote_average())
                                 .popularity(movie.getPopularity())
                                 .poster_path(movie.getPoster_path())
+                                .original_language(movie.getOriginal_language())
+                                .original_country(findCountryName(movie.getOriginal_country()))
+                                .genres(movie.getGenres())
+                                .build()
+                )
+        );
+
+        return movieSearchDtos;
+    }
+    public List<MovieSearchDto> findByTitleOrOverviewOrActorsOrDirectorPopular(String word) {
+        List<MovieSearchDto> movieSearchDtos = new ArrayList<>();
+
+        movieSearchRepository.findByTitleOrOverviewOrActorsOrDirectorPopular(word).forEach(movie ->
+                movieSearchDtos.add(
+                        MovieSearchDto.builder()
+                                .id(movie.getId())
+                                .overview(movie.getOverview())
+                                .release_date(movie.getRelease_date() != null ? movie.getRelease_date().toString() : null) // 변환
+                                .title(movie.getTitle())
+                                .vote_average(movie.getVote_average())
+                                .popularity(movie.getPopularity())
+                                .poster_path(movie.getPoster_path())
                                 .vote_count(movie.getVote_count())
                                 .original_language(movie.getOriginal_language())
                                 .original_country(findCountryName(movie.getOriginal_country()))
@@ -46,5 +68,4 @@ public class MovieSearchService {
 
         return movieSearchDtos;
     }
-
 }
