@@ -23,4 +23,6 @@ public class MovieDto {
     private String original_language;
     private String original_country;
     private String genres;
+
+
 }
