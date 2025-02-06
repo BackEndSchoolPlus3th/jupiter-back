@@ -2,12 +2,6 @@ server:
   port: 8090
   timezone: Asia/Seoul
 spring:
-  batch:
-    jdbc:
-      initialize-schema: never
-    job:
-      enabled: false
-      name: movieBatchJob
   config:
     import: application-secret.yml
   output:
@@ -48,12 +42,12 @@ logging:
 custom:
   dev:
     cookieDomain: localhost
-    frontUrl: "http://${custom.dev.cookieDomain}:5173"
+    frontUrl: "http://${custom.dev.cookieDomain}:3000"
     backUrl: "http://${custom.dev.cookieDomain}:${server.port}"
   prod:
     cookieDomain: wyl.seoez.site
-    frontUrl: "https://www.${custom.prod.cookieDomain}"
-    backUrl: "https://api.${custom.prod.cookieDomain}"
+    frontUrl: "https://www.${custom.prod.cookiedomain}/"
+    backUrl: "https://api.${custom.prod.cookiedomain}/"
   site:
     name: "WYL DEV"
     cookieDomain: "${custom.dev.cookieDomain}"
@@ -73,4 +67,5 @@ spring doc:
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
   paths-to-match:
-    - /api/**
+
+  - /api/**

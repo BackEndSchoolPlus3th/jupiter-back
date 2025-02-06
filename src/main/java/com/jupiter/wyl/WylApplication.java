@@ -9,13 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.context.request.RequestContextListener;
 
 @SpringBootApplication
-@EnableScheduling
-@EnableJpaRepositories(basePackages = {
-		"com.jupiter.wyl.domain.member.repository",
-		"com.jupiter.wyl.domain.movie.movie.repository.jpa",
-		"com.jupiter.wyl.domain.main.repository"
-})
-@EnableElasticsearchRepositories(basePackages = "com.jupiter.wyl.domain.movie.movie.repository.elastic")
 public class WylApplication {
 
 	public static void main(String[] args) {

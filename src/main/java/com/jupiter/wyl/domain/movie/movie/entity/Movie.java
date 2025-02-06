@@ -43,14 +43,40 @@ public class Movie {
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MovieGenre> movieGenreList;
 
+    @Column(length = 512)
+    private String genres;  // String으로 정의한 genres 필드 추가
+
     @OneToMany
     List<MovieReview>  movieReviewList;
 
-public Movie(){
+    public Movie(){
 
-}
+    }
+
     public void addMovieGenre(MovieGenre movieGenre) {
         movieGenreList.add(movieGenre);
         movieGenre.setMovie(this);
+    }
+
+    public String getMovieGenres(){
+        StringBuilder sb = new StringBuilder();
+        for(MovieGenre movieGenre : movieGenreList){
+            sb.append(movieGenre.getGenreName());
+            sb.append(",");
+        }
+        return sb.toString();
+    }
+
+    // genres 필드를 자동으로 설정
+    public void setGenresFromMovieGenres() {
+        StringBuilder sb = new StringBuilder();
+        for (MovieGenre movieGenre : movieGenreList) {
+            sb.append(movieGenre.getGenreName());
+            sb.append(",");
+        }
+        if (sb.length() > 0) {
+            sb.deleteCharAt(sb.length() - 1);  // 마지막 콤마 제거
+        }
+        this.genres = sb.toString();
     }
 }

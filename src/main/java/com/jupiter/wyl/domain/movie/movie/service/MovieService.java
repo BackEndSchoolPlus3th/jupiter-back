@@ -4,9 +4,7 @@ import com.jupiter.wyl.domain.movie.movie.dto.response.*;
 import com.jupiter.wyl.domain.movie.movie.entity.Movie;
 import com.jupiter.wyl.domain.movie.movie.entity.MovieGenre;
 import com.jupiter.wyl.domain.movie.movie.repository.jpa.MovieRepository;
-import com.jupiter.wyl.domain.movie.movie.repository.elastic.MovieSearchRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,6 +15,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -88,6 +88,7 @@ public class MovieService {
                         genreName(movieGenreService.getValue(genre)).build();
                 movie.addMovieGenre(movieGenre);
             }
+            movie.setGenresFromMovieGenres();
             movieRepository.save(movie);
 
         }
@@ -111,6 +112,7 @@ public class MovieService {
                                 original_language(e.getOriginal_language()).
                                 original_country(findCountryName(e.getOriginal_country())).
                                 genres(Arrays.toString(e.getMovieGenreList().toArray())).
+                                keywords(e.getKeywords()).
                                 build()
                 )
         );
@@ -181,6 +183,24 @@ public class MovieService {
         };
 
         return countryName;
+    }
+
+    public MovieDto findById(Long id) {
+        Movie movie = movieRepository.findById(id).get();
+        MovieDto movieDto = MovieDto.builder()
+                .id(movie.getId())
+                .title(movie.getTitle())
+                .overview(movie.getOverview())
+                .release_date(movie.getRelease_date())
+                .vote_average(movie.getVote_average())
+                .popularity(movie.getDirector())
+                .poster_path(movie.getPoster_path())
+                .vote_count(movie.getVote_count())
+                .original_country(movie.getOriginal_country())
+                .original_language(movie.getKeywords())
+                .genres(movie.getActors())
+                .build();
+        return movieDto;
     }
 
 }

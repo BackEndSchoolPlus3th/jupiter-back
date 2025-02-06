@@ -29,4 +29,11 @@ public class Member extends BaseEntity {
     @Column(length = 500)
     @JsonIgnore
     private String refreshToken;
+
+    @Column(length = 512)
+    private String likeGenres;
+
+    @Column(length = 512)
+    private String likeKeywords;
+
 }
