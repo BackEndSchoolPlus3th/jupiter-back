@@ -1,6 +1,7 @@
 package com.jupiter.wyl.domain.movie.movie.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
