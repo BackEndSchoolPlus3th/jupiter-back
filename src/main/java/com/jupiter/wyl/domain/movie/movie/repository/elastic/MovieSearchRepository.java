@@ -1,15 +1,14 @@
 package com.jupiter.wyl.domain.movie.movie.repository.elastic;
 
-import com.jupiter.wyl.domain.main.dto.MovieMainDto;
-import com.jupiter.wyl.domain.movie.movie.dto.response.MovieSearchDto;
 import com.jupiter.wyl.domain.movie.movie.document.Movie;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.data.repository.query.Param;
 
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Repository("movieSearchRepository")
 public interface MovieSearchRepository extends ElasticsearchRepository<Movie, Long> {
@@ -64,4 +63,14 @@ public interface MovieSearchRepository extends ElasticsearchRepository<Movie, Lo
     """)
     List<Movie> findByTitleOrOverviewOrActorsOrDirectorPopular(@Param("word") String word);
 
+    @Query("""
+    {
+      "bool": {
+          "filter": [
+            { "match": { "genres": "?0" } }
+          ]
+      }
+    }
+    """)
+    List<Movie> findByLikeGenres(String genre, Pageable pageable);
 }

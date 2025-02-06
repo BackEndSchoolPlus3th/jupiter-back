@@ -29,11 +29,11 @@ public class MemberInitData {
 //                member1.setLikeGenres("공포,스릴러,로맨스");
 //                member1.setLikeKeywords("없음");
 //
-//                member1.setLikeGenres("로맨스,드라마,모험,코미디");
-//                member1.setLikeKeywords("없음");
+//                member2.setLikeGenres("로맨스,드라마,모험,코미디");
+//                member2.setLikeKeywords("없음");
 //
-//                member1.setLikeGenres("액션,가족,애니메이션");
-//                member1.setLikeKeywords("없음");
+//                member3.setLikeGenres("액션,가족,애니메이션");
+//                member3.setLikeKeywords("없음");
             }
         };
     }

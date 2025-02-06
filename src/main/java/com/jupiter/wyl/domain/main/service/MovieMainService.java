@@ -4,18 +4,24 @@ import com.jupiter.wyl.domain.main.dto.MovieMainDto;
 import com.jupiter.wyl.domain.main.dto.response.MovieMainResponse;
 import com.jupiter.wyl.domain.main.entity.MovieMain;
 import com.jupiter.wyl.domain.main.repository.MovieMainRepository;
+import com.jupiter.wyl.domain.member.service.MemberService;
+import com.jupiter.wyl.domain.movie.movie.dto.response.MovieSearchDto;
 import com.jupiter.wyl.domain.movie.movie.repository.elastic.MovieSearchRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +38,7 @@ public class MovieMainService {
     private final MovieMainRepository movieMainRepository;
     @Autowired
     private final MovieSearchRepository movieSearchRepository;
-
+    private final MemberService memberService;
     private static final String BASE_URL = "https://api.themoviedb.org/3";
 
     // 영화 데이터 DB에 저장
@@ -146,5 +152,23 @@ public class MovieMainService {
         } catch (Exception e) {
             logger.error("스케줄러 작업 중 오류 발생: {}", e.getMessage());
         }
+    }
+
+    public List<MovieMainDto> getMoviesByLikeGenre(String email) {
+        List<MovieMainDto> movieMainDto = new ArrayList<>();
+        String favoriteGenre = memberService.getUserLikeGenres(email).split(",")[0];
+
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("popularity").descending());
+        movieSearchRepository.findByLikeGenres(favoriteGenre, pageable).forEach(movie ->
+            movieMainDto.add(
+                MovieMainDto.builder()
+                    .id(movie.getId())
+                    .overview(movie.getOverview())
+                    .title(movie.getTitle())
+                    .posterPath(movie.getPoster_path())
+                    .build()
+            )
+        );
+        return movieMainDto;
     }
 }

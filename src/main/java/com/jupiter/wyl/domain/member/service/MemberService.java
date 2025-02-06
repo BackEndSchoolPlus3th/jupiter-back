@@ -79,4 +79,8 @@ public class MemberService {
         return new SecurityUser(id, nickname, "", authorities);
     }
 
+    // 멤버 정보
+    public String getUserLikeGenres(String email){
+        return memberRepository.findByEmail(email).get().getLikeGenres();
+    }
 }
