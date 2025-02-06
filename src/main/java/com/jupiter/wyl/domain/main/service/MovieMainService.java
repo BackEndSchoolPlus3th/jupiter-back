@@ -86,8 +86,8 @@ public class MovieMainService {
         return movies;
     }
 
-    public List<MovieMainDto> getLikeGenreMovies() {
-        List<MovieMainDto> movies = fetchMoviesFromApi("top_rated");
-        return movies;
+    public String getLikeGenreMovies() {
+//        List<MovieMainDto> movies = movieSearchRepository.findByLikeGenre();
+        return "구현중";
     }
 }

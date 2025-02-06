@@ -1,5 +1,6 @@
 package com.jupiter.wyl.domain.movie.movie.repository.elastic;
 
+import com.jupiter.wyl.domain.main.dto.MovieMainDto;
 import com.jupiter.wyl.domain.movie.movie.dto.response.MovieSearchDto;
 import com.jupiter.wyl.domain.movie.movie.document.Movie;
 import org.springframework.data.elasticsearch.annotations.Query;
@@ -44,4 +45,5 @@ public interface MovieSearchRepository extends ElasticsearchRepository<Movie, Lo
     """)
     List<Movie> findByTitleOrOverviewOrActorsOrDirector(@Param("word") String word);
 
+    //List<MovieMainDto> findByLikeGenre();
 }

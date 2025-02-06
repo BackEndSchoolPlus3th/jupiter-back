@@ -42,9 +42,9 @@ public class ApiV1MovieMainController {
         return movieMainService.getTopRatedMovies();
     }
 
-    @GetMapping("/api/v1/movie/like-genre")
-    @CrossOrigin(origins = "http://localhost:3000")
-    public List<MovieMainDto> getLikeGenreMovies() {
-        return movieMainService.getLikeGenreMovies();
-    }
+//    @GetMapping("/api/v1/movie/like-genre")
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    public List<MovieMainDto> getLikeGenreMovies() {
+//        return movieMainService.getLikeGenreMovies();
+//    }
 }

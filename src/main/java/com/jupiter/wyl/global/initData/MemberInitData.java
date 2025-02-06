@@ -21,9 +21,9 @@ public class MemberInitData {
             @Transactional
             @Override
             public void run(ApplicationArguments args) throws Exception {
-//                Member member1 = memberService.join("apple@aaa.aaa", "김호러", "1234");
-//                Member member2 = memberService.join("banana@aaa.aaa", "이사랑", "1234");
-//                Member member3 = memberService.join("cherry@aaa.aaa", "최웃음", "1234");
+//                Member member1 = memberService.join("apple@aaa.aaa", "김호러", "123456");
+//                Member member2 = memberService.join("banana@aaa.aaa", "이사랑", "123456");
+//                Member member3 = memberService.join("cherry@aaa.aaa", "최웃음", "123456");
 //
 //                //가데이터 입력
 //                member1.setLikeGenres("공포,스릴러,로맨스");
