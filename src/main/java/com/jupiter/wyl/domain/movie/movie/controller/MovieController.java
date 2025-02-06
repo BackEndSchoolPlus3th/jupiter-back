@@ -40,7 +40,6 @@ public class MovieController {
     @GetMapping("/{id}")
     public MovieDto getMovie(@PathVariable("id") Long id) {
         MovieDto movie = movieService.findById(id);
-        //System.out.println(movie.toString());
         return movie;
     }
 
