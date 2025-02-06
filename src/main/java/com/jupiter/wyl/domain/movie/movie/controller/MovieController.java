@@ -1,7 +1,8 @@
 package com.jupiter.wyl.domain.movie.movie.controller;
 
+
 import com.jupiter.wyl.domain.movie.movie.dto.request.ReviewRequest;
-import com.jupiter.wyl.domain.movie.movie.dto.response.MovieDetailResponseDto;
+
 import com.jupiter.wyl.domain.movie.movie.dto.response.MovieDto;
 import com.jupiter.wyl.domain.movie.movie.dto.response.MovieSearchDto;
 import com.jupiter.wyl.domain.movie.movie.service.MovieSearchService;
@@ -25,8 +26,8 @@ public class MovieController {
     }
 
     @GetMapping("/search")
-    public List<MovieSearchDto> findByTitle(){
-        List<MovieSearchDto> movieSearchDtos = movieSearchService.searchByTitle("글래디에이터");
+    public List<MovieSearchDto> findByTitleOrOverviewOrActorsOrDirector(@RequestParam("word") String word){
+        List<MovieSearchDto> movieSearchDtos = movieSearchService.findByTitleOrOverviewOrActorsOrDirector(word);
         return movieSearchDtos;
     }
 
