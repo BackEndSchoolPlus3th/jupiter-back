@@ -30,15 +30,21 @@ public class ApiV1MovieMainController {
         this.movieMainService = movieMainService;
     }
 
-    @GetMapping("/api/movies/popular")
+    @GetMapping("/api/v1/movie/popular")
     @CrossOrigin(origins = "http://localhost:3000")
     public List<MovieMainDto> getPopularMovies() {
         return movieMainService.getPopularMovies();
     }
 
-    @GetMapping("/api/movies/top-rated")
+    @GetMapping("/api/v1/movie/top-rated")
     @CrossOrigin(origins = "http://localhost:3000")
     public List<MovieMainDto> getTopRatedMovies() {
         return movieMainService.getTopRatedMovies();
     }
+
+//    @GetMapping("/api/v1/movie/like-genre")
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    public List<MovieMainDto> getLikeGenreMovies() {
+//        return movieMainService.getLikeGenreMovies();
+//    }
 }
