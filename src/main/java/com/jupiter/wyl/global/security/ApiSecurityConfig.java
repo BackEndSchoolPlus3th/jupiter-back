@@ -24,6 +24,7 @@ public class ApiSecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(HttpMethod.GET, "/api/*/movie").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/*/movie/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/*/movie/*/*").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/*/member/signup").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/*/member/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/*/member/logout").permitAll()

@@ -29,5 +29,4 @@ public class MovieController {
         List<MovieSearchDto> movieSearchDtos = movieSearchService.searchByTitle("글래디에이터");
         return movieSearchDtos;
     }
-
 }
