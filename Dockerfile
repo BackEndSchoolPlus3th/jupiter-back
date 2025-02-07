@@ -1,13 +1,13 @@
 # 첫 번째 스테이지: 빌드 스테이지
-# JDK 23을 기본으로 제공
-FROM eclipse-temurin:23-jdk as builder
+FROM gradle:8.11.1-jdk21 as builder  # Gradle 8.11.1 + JDK 21
 
-# Gradle 설치
-RUN apt-get update && apt-get install -y curl unzip \
-    && curl -s https://services.gradle.org/distributions/gradle-8.11.1-bin.zip -o gradle.zip \
-    && unzip gradle.zip -d /opt/gradle \
-    && rm gradle.zip
-ENV PATH="/opt/gradle/gradle-8.11.1/bin:$PATH"
+# Java 23 설치
+USER root
+RUN apt-get update && apt-get install -y openjdk-23-jdk
+
+# 환경 변수 설정
+ENV JAVA_HOME=/usr/lib/jvm/java-23-openjdk-amd64
+ENV PATH="$JAVA_HOME/bin:$PATH"
 
 # 작업 디렉토리 설정
 WORKDIR /app
@@ -31,7 +31,7 @@ COPY src src
 RUN ./gradlew build --no-daemon
 
 # 두 번째 스테이지: 실행 스테이지
-FROM ghcr.io/graalvm/jdk-community:23
+FROM ghcr.io/graalvm/jdk-community:23  # 실행 환경은 GraalVM 23 유지
 
 # 작업 디렉토리 설정
 WORKDIR /app
