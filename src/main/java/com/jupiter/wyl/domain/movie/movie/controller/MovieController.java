@@ -1,6 +1,7 @@
 package com.jupiter.wyl.domain.movie.movie.controller;
 
 
+import com.jupiter.wyl.domain.movie.movie.document.Movie;
 import com.jupiter.wyl.domain.movie.movie.dto.request.ReviewRequest;
 
 import com.jupiter.wyl.domain.movie.movie.dto.response.MovieDto;
@@ -8,6 +9,7 @@ import com.jupiter.wyl.domain.movie.movie.dto.response.MovieSearchDto;
 import com.jupiter.wyl.domain.movie.movie.service.MovieSearchService;
 import com.jupiter.wyl.domain.movie.movie.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +36,12 @@ public class MovieController {
     @GetMapping("/search/popular")
     public List<MovieSearchDto> findByTitleOrOverviewOrActorsOrDirectorPopular(@RequestParam("word") String word){
         List<MovieSearchDto> movieSearchDtos = movieSearchService.findByTitleOrOverviewOrActorsOrDirectorPopular(word);
+        return movieSearchDtos;
+    }
+
+    @GetMapping("/search/latest")
+    public List<MovieSearchDto> findByTitleOrOverviewOrActorsOrDirectorLatest(@RequestParam("word") String word){
+        List<MovieSearchDto> movieSearchDtos = movieSearchService.findByTitleOrOverviewOrActorsOrDirectorLatest(word);
         return movieSearchDtos;
     }
 
