@@ -1,17 +1,17 @@
 server:
   port: 8090
+  timezone: Asia/Seoul
 spring:
+  config:
+    import: application-secret.yml
   output:
     ansi:
       enabled: ALWAYS
   profiles:
     active: dev
     include: secret
-  datasource:
-    url: jdbc:h2:./db_dev;MODE=MySQL
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+  elasticsearch:
+    uris: http://223.130.160.191:9200  # Elasticsearch 서버 주소
   jpa:
     open-in-view: false
     hibernate:
@@ -22,6 +22,8 @@ spring:
         format_sql: true
         highlight: true
         use_sql_comments: true
+  websocket:
+    enabled: true
 logging:
   level:
     com.jupiter.wyl: DEBUG
@@ -29,6 +31,7 @@ logging:
     org.hibernate.type.blind: TRACE
     org.hibernate.type.extract: TRACE
     org.springframework.transaction.interceptor: TRACE
+    org.springframework: DEBUG
 custom:
   dev:
     cookieDomain: localhost
@@ -36,10 +39,26 @@ custom:
     backUrl: "http://${custom.dev.cookieDomain}:${server.port}"
   prod:
     cookieDomain: wyl.seoez.site
-    frontUrl: "https://www.${custom.prod.cookieDomain}"
-    backUrl: "https://api.${custom.prod.cookieDomain}"
+    frontUrl: "https://www.${custom.prod.cookiedomain}/"
+    backUrl: "https://api.${custom.prod.cookiedomain}/"
   site:
     name: "WYL DEV"
     cookieDomain: "${custom.dev.cookieDomain}"
     frontUrl: "${custom.dev.frontUrl}"
     backUrl: "${custom.dev.backUrl}"
+
+spring doc:
+  swagger-ui:
+    path: /swagger-ui.html
+    groups-order: DESC
+    operationsSorter: method
+    disable-swagger-default-url: true
+    display-request-duration: true
+  api-docs:
+    path: /api-docs
+  show-actuator: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  paths-to-match:
+
+  - /api/**
