@@ -85,12 +85,13 @@ public class MovieSearchService {
                 .map(hit -> {
                     Movie movie = hit.getContent();
                     return MovieSearchDto.builder().
+                            id(movie.getId()).
                             title(movie.getTitle()).
                             overview(movie.getOverview()).
                             release_date(movie.getRelease_date()).
                             popularity(movie.getPopularity()).
                            // genres(movie.getMovieGenres()).
-                            original_country(movie.getOriginal_country()).
+                            original_country(findCountryName(movie.getOriginal_country())).
                           //  keywords(movie.getKeywords()).
                             poster_path(movie.getPoster_path()).
                          //   director(movie.getDirector()).
@@ -123,12 +124,13 @@ public class MovieSearchService {
                 .map(hit -> {
                     Movie movie = hit.getContent();
                     return MovieSearchDto.builder().
+                            id(movie.getId()).
                             title(movie.getTitle()).
                             overview(movie.getOverview()).
                             release_date(movie.getRelease_date()).
                             popularity(movie.getPopularity()).
                             // genres(movie.getMovieGenres()).
-                                    original_country(movie.getOriginal_country()).
+                                    original_country(findCountryName(movie.getOriginal_country())).
                             //  keywords(movie.getKeywords()).
                                     poster_path(movie.getPoster_path()).
                             //   director(movie.getDirector()).
