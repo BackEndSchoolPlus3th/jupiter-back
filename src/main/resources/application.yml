@@ -8,7 +8,7 @@ spring:
     ansi:
       enabled: ALWAYS
   profiles:
-    active: dev
+    active: prod
     include: secret
   datasource:
     url: jdbc:mysql://localhost:3306/exam_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
