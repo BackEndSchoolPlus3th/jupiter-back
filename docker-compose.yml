@@ -4,53 +4,12 @@ services:
     image: mysql:9.2.0
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: root123414
       MYSQL_DATABASE: exam_db
     ports:
       - "3306:3306"
     volumes:
       - ./db/:/var/lib/mysql
-
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.3
-    container_name: elasticsearch
-    environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
-    ports:
-      - "9200:9200"
-    networks:
-      - elastic
-
-  kibana:
-    image: docker.elastic.co/kibana/kibana:8.3.3
-    container_name: kibana
-    environment:
-      SERVER_NAME: kibana
-      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
-    ports:
-      - 5601:5601
-    depends_on:
-      - elasticsearch
-    networks:
-      - elastic
-
-  logstash:
-    image: docker.elastic.co/logstash/logstash:8.3.3
-    container_name: logstash
-    environment:
-      - LS_JAVA_OPTS=-Xms512m -Xmx512m
-    volumes:
-      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
-      - ./logstash/lib/mysql-connector-j-9.2.0.jar:/usr/share/logstash/logstash-core/lib/jars/mysql-connector-j-9.2.0.jar:ro
-    ports:
-      - "5001:5001"
-      - "5044:5044"
-    depends_on:
-      - elasticsearch
-    networks:
-      - elastic
 
   mongodb:
     image: mongo
@@ -67,7 +26,3 @@ services:
     # 볼륨 설정
     volumes:
       - ./data/mongodb:/data/db
-
-networks:
-  elastic:
-    driver: bridge
