@@ -43,9 +43,17 @@ public class ApiV1MovieMainController {
         return movieMainService.getTopRatedMovies();
     }
 
-    @GetMapping("/api/v1/movie/genre/{genreId}")
+    @GetMapping("/api/v1/movie/genre/28")
     @CrossOrigin(origins = "http://localhost:3000")
-    public List<MovieMainDto> getMoviesByGenre(@PathVariable String genreId) {
-        return movieMainService.getMoviesByGenre(genreId);
+    public List<MovieMainDto> getActionMovies() {
+        movieMainService.saveGenreMoviesToDatabase("28", "action");
+        return movieMainService.getActionMovies();
+    }
+
+    @GetMapping("/api/v1/movie/genre/35")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public List<MovieMainDto> getComedyMovies() {
+        movieMainService.saveGenreMoviesToDatabase("35", "comedy");
+        return movieMainService.getComedyMovies();
     }
 }
