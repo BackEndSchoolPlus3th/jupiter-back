@@ -10,11 +10,8 @@ spring:
   profiles:
     active: dev
     include: secret
-  datasource:
-    url: jdbc:mysql://localhost:3306/exam_db
-    username: root
-    password: root123414
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  elasticsearch:
+    uris: http://223.130.160.191:9200  # Elasticsearch 서버 주소
   jpa:
     open-in-view: false
     hibernate:
@@ -25,10 +22,6 @@ spring:
         format_sql: true
         highlight: true
         use_sql_comments: true
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/
-      database: chat
   websocket:
     enabled: true
 logging:
