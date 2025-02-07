@@ -1,11 +1,16 @@
 package com.jupiter.wyl.domain.main.service;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.SortOptions;
+import co.elastic.clients.elasticsearch._types.SortOrder;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.jupiter.wyl.domain.main.dto.MovieMainDto;
 import com.jupiter.wyl.domain.main.dto.response.MovieMainResponse;
 import com.jupiter.wyl.domain.main.entity.MovieMain;
 import com.jupiter.wyl.domain.main.repository.MovieMainRepository;
 import com.jupiter.wyl.domain.member.service.MemberService;
-import com.jupiter.wyl.domain.movie.movie.dto.response.MovieSearchDto;
+import com.jupiter.wyl.domain.movie.movie.document.Movie;
 import com.jupiter.wyl.domain.movie.movie.repository.elastic.MovieSearchRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -21,8 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +37,7 @@ import java.util.stream.Collectors;
 public class MovieMainService {
 
     private static final Logger logger = LoggerFactory.getLogger(MovieMainService.class);
+    private final ElasticsearchClient elasticsearchClient;
 
     @Value("${tmdb.key}")
     private String apiKey;
@@ -154,21 +162,36 @@ public class MovieMainService {
         }
     }
 
-    public List<MovieMainDto> getMoviesByLikeGenre(String email) {
-        List<MovieMainDto> movieMainDto = new ArrayList<>();
-        String favoriteGenre = memberService.getUserLikeGenres(email).split(",")[0];
-
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("popularity").descending());
-        movieSearchRepository.findByLikeGenres(favoriteGenre, pageable).forEach(movie ->
-            movieMainDto.add(
-                MovieMainDto.builder()
-                    .id(movie.getId())
-                    .overview(movie.getOverview())
-                    .title(movie.getTitle())
-                    .posterPath(movie.getPoster_path())
-                    .build()
-            )
+    public List<MovieMainDto> searchMoviesByGenre(String email, int index) throws IOException {
+        String genre = memberService.getUserLikeGenres(email).split(",")[index];
+        logger.info(genre);
+        SearchResponse<Movie> response = elasticsearchClient.search(s -> s
+                        .index("movie_genres")  // 🔹 Elasticsearch에서 사용할 인덱스명 (변경 가능)
+                        .query(q -> q
+                                .bool(b -> b
+                                        .should(f -> f.wildcard(m -> m.field("genres").value("*" + genre + "*"))) // ✅ 부분 일치 검색
+                                )
+                        )
+                        .sort(SortOptions.of(sorts -> sorts
+                                .field(fields -> fields.field("popularity").order(SortOrder.Desc))
+                        ))
+                        .size(10), // 🔹 최대 10개 가져오기
+                Movie.class
         );
-        return movieMainDto;
+
+        return response.hits().hits().stream()
+                .map(Hit::source).filter(Objects::nonNull)
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    // 🔹 Movie → MovieMainDto 변환 메서드
+    private MovieMainDto convertToDto(Movie movie) {
+        return new MovieMainDto(
+                movie.getId(),
+                movie.getTitle(),
+                movie.getOverview(),
+                movie.getPoster_path()
+        );
     }
 }

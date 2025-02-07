@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -53,7 +54,13 @@ public class ApiV1MovieMainController {
 
     @GetMapping("/api/v1/movie/likes")
     @CrossOrigin(origins = "http://localhost:5173")
-    public List<MovieMainDto> getMoviesByLikeGenre(Principal principal) {
-        return movieMainService.getMoviesByLikeGenre("apple@aaa.aaa");
+    public List<MovieMainDto> getMoviesByLikeGenre(Principal principal) throws IOException {
+        return movieMainService.searchMoviesByGenre("banana@aaa.aaa",0);
+    }
+
+    @GetMapping("/api/v1/movie/likes_2nd")
+    @CrossOrigin(origins = "http://localhost:5173")
+    public List<MovieMainDto> getMoviesByLikeGenre2nd(Principal principal) throws IOException {
+        return movieMainService.searchMoviesByGenre("banana@aaa.aaa",1);
     }
 }

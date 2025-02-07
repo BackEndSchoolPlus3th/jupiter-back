@@ -63,14 +63,4 @@ public interface MovieSearchRepository extends ElasticsearchRepository<Movie, Lo
     """)
     List<Movie> findByTitleOrOverviewOrActorsOrDirectorPopular(@Param("word") String word);
 
-    @Query("""
-    {
-      "bool": {
-          "filter": [
-            { "match": { "genres": "?0" } }
-          ]
-      }
-    }
-    """)
-    List<Movie> findByLikeGenres(String genre, Pageable pageable);
 }
