@@ -12,7 +12,7 @@ services:
       - ./db/:/var/lib/mysql
 
   mongodb:
-    image: mongo_1
+    image: mongo:latest
     restart: always
     container_name: mongodb
     # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
