@@ -1,11 +1,11 @@
 package com.jupiter.wyl.domain.main.controller;
 
 import com.jupiter.wyl.domain.main.dto.MovieMainDto;
+import com.jupiter.wyl.domain.main.service.MovieGenreMainService;
 import com.jupiter.wyl.domain.main.service.MovieMainService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,9 +26,11 @@ public class ApiV1MovieMainController {
     }
 
     private final MovieMainService movieMainService;
+    private final MovieGenreMainService movieGenreMainService;
 
-    public ApiV1MovieMainController(MovieMainService movieMainService) {
+    public ApiV1MovieMainController(MovieMainService movieMainService, MovieGenreMainService movieGenreMainService) {
         this.movieMainService = movieMainService;
+        this.movieGenreMainService = movieGenreMainService;
     }
 
     @GetMapping("/api/v1/movie/popular")
@@ -43,17 +45,21 @@ public class ApiV1MovieMainController {
         return movieMainService.getTopRatedMovies();
     }
 
-    @GetMapping("/api/v1/movie/genre/28")
+    @GetMapping("/api/v1/movie/genre/action")
     @CrossOrigin(origins = "http://localhost:3000")
     public List<MovieMainDto> getActionMovies() {
-        movieMainService.saveGenreMoviesToDatabase("28", "action");
-        return movieMainService.getActionMovies();
+        return movieGenreMainService.getActionMovies();
     }
 
-    @GetMapping("/api/v1/movie/genre/35")
+    @GetMapping("/api/v1/movie/genre/comedy")
     @CrossOrigin(origins = "http://localhost:3000")
     public List<MovieMainDto> getComedyMovies() {
-        movieMainService.saveGenreMoviesToDatabase("35", "comedy");
-        return movieMainService.getComedyMovies();
+        return movieGenreMainService.getComedyMovies();
+    }
+
+    @GetMapping("/api/v1/movie/genre/animation")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public List<MovieMainDto> getAnimationMovies() {
+        return movieGenreMainService.getAnimationMovies();
     }
 }

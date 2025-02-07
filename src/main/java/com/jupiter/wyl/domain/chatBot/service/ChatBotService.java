@@ -5,6 +5,7 @@ import com.jupiter.wyl.domain.chatBot.dto.response.ChatBotResponse;
 import com.jupiter.wyl.domain.chatBot.entity.Message;
 import com.jupiter.wyl.domain.chatBot.repository.ChatBotRepository;
 import com.jupiter.wyl.domain.main.dto.MovieMainDto;
+import com.jupiter.wyl.domain.main.service.MovieGenreMainService;
 import com.jupiter.wyl.domain.main.service.MovieMainService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -25,11 +26,13 @@ public class ChatBotService {
     private String apiKey;
 
     private final MovieMainService movieMainService;
+    private final MovieGenreMainService movieGenreMainService;
     private final RestTemplate restTemplate;
     private final ChatBotRepository chatBotRepository;
 
-    public ChatBotService(MovieMainService movieMainService, RestTemplate restTemplate, ChatBotRepository chatBotRepository) {
+    public ChatBotService(MovieMainService movieMainService, MovieGenreMainService movieGenreMainService, RestTemplate restTemplate, ChatBotRepository chatBotRepository) {
         this.movieMainService = movieMainService;
+        this.movieGenreMainService = movieGenreMainService;
         this.restTemplate = restTemplate;
         this.chatBotRepository = chatBotRepository;
     }
@@ -54,7 +57,7 @@ public class ChatBotService {
         System.out.println("선택된 장르: " + genre);
 
         // 영화 데이터를 가져오기
-        List<MovieMainDto> movies = movieMainService.getMoviesByGenre(genre);
+        List<MovieMainDto> movies = movieGenreMainService.getMoviesByCategory(genre);
 
         if (movies.isEmpty()) {
             return "죄송합니다, 해당 장르의 영화 정보를 찾을 수 없습니다.";
