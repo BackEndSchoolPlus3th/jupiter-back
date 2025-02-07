@@ -1,5 +1,6 @@
 # 첫 번째 스테이지: 빌드 스테이지
-FROM gradle:8.11.1-jdk21 as builder  # Gradle 8.11.1 + JDK 21
+FROM gradle:8.11.1-jdk21 as builder
+# Gradle 8.11.1 + JDK 21
 
 # Java 23 설치
 USER root
@@ -31,7 +32,8 @@ COPY src src
 RUN ./gradlew build --no-daemon
 
 # 두 번째 스테이지: 실행 스테이지
-FROM ghcr.io/graalvm/jdk-community:23  # 실행 환경은 GraalVM 23 유지
+FROM ghcr.io/graalvm/jdk-community:23
+# 실행 환경은 GraalVM 23 유지
 
 # 작업 디렉토리 설정
 WORKDIR /app
