@@ -59,7 +59,7 @@ public class MemberService {
                     member.setLikeKeywords("cold,based on novel or book,gothic horror,desire,satire,aging,celebrity");
                     break;
                 case "banana@aaa.aaa" :
-                    member.setLikeGenres("로맨스,가족,드라마,애니메이션");
+                    member.setLikeGenres("가족,모험,드라마,애니메이션");
                     member.setLikeKeywords("witch,dancing,based on novel or book,college,bangkok,thailand,remake,italian");
                     break;
                 case "cherry@aaa.aaa" :
