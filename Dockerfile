@@ -23,7 +23,7 @@ COPY src src
 RUN ./gradlew build --no-daemon
 
 # 두 번째 스테이지: 실행 스테이지
-FROM ghcr.io/graalvm/jdk-community:21
+FROM ghcr.io/graalvm/jdk-community:23
 
 # 작업 디렉토리 설정
 WORKDIR /app
