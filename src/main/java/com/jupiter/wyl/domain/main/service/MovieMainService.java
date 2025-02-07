@@ -49,6 +49,22 @@ public class MovieMainService {
     private final MemberService memberService;
     private static final String BASE_URL = "https://api.themoviedb.org/3";
 
+    // 장르별 영화 데이터를 가져오고 DB에 저장하는 메서드
+    public void saveGenreMoviesToDatabase(String genreId, String category) {
+        try {
+            // 장르별 영화 데이터를 API에서 가져옴
+            List<MovieMainDto> movies = getMoviesByGenre(genreId);
+            if (movies.isEmpty()) {
+                logger.warn("장르 {}의 영화 데이터가 없습니다.", genreId);
+                return;
+            }
+            // 데이터를 DB에 저장
+            saveMoviesToDatabase(movies, category);
+        } catch (Exception e) {
+            logger.error("장르별 영화 저장 실패: {}", e.getMessage());
+        }
+    }
+
     // 영화 데이터 DB에 저장
     @Transactional
     public void saveMoviesToDatabase(List<MovieMainDto> movieMainDtos, String category) {
@@ -93,6 +109,7 @@ public class MovieMainService {
     // 장르별 영화 데이터를 가져오는 메서드
     public List<MovieMainDto> getMoviesByGenre(String genreId) {
         try {
+            System.out.println("Requesting movies for genreId: " + genreId);
             String url = UriComponentsBuilder.fromHttpUrl(BASE_URL + "/discover/movie")
                     .queryParam("api_key", apiKey)
                     .queryParam("with_genres", genreId)  // 장르 ID로 필터링
@@ -106,7 +123,17 @@ public class MovieMainService {
             if (movieMainResponse != null) {
                 logger.info("장르: {} 영화 데이터를 API에서 성공적으로 가져왔습니다. 총 {}개의 영화.", genreId, movieMainResponse.getResults().size());
             }
-            return movieMainResponse != null ? movieMainResponse.getResults() : List.of();
+            if (movieMainResponse != null && movieMainResponse.getResults() != null) {
+                return movieMainResponse.getResults().stream()
+                        .map(movie -> new MovieMainDto(
+                                movie.getId(),
+                                movie.getTitle(),
+                                movie.getOverview(),
+                                movie.getPosterPath()))  // MovieMain -> MovieMainDto로 변환
+                        .collect(Collectors.toList());
+            } else {
+                return List.of();  // 결과가 없으면 빈 리스트 반환
+            }
         } catch (Exception e) {
             logger.error("API 호출 실패: {}", e.getMessage());
             throw new RuntimeException("영화 데이터를 가져오는 데 실패했습니다.", e);
@@ -115,14 +142,17 @@ public class MovieMainService {
 
     // 영화 데이터 가져오기: API에서 가져오거나 DB에서 가져오기
     public List<MovieMainDto> getMovies(String category) {
-        List<MovieMainDto> movies = fetchMoviesFromApi(category);
-        if (movies.isEmpty()) {
-            // DB에 데이터가 없으면 API에서 데이터를 가져와서 저장
+        List<MovieMain> movieMainList = movieMainRepository.findByCategory(category);
+        List<MovieMainDto> movieMainDtos = movieMainList.stream()
+                .map(movie -> new MovieMainDto(movie.getId(), movie.getTitle(), movie.getOverview(), movie.getPosterPath()))
+                .collect(Collectors.toList());
+
+        if (movieMainDtos.isEmpty()) {
             logger.info("DB에 데이터가 없어서 API에서 데이터를 가져옵니다. 카테고리: {}", category);
-            movies = fetchMoviesFromApi(category);
-            saveMoviesToDatabase(movies, category);  // API에서 가져온 데이터 저장
+            movieMainDtos = fetchMoviesFromApi(category);  // API에서 데이터를 가져옴
+            saveMoviesToDatabase(movieMainDtos, category);  // DB에 저장
         }
-        return movies;
+        return movieMainDtos;
     }
 
     // Popular 영화 가져오기
@@ -135,8 +165,21 @@ public class MovieMainService {
         return getMovies("top_rated");
     }
 
+    // 장르별 영화 데이터 가져오기
+    public List<MovieMainDto> getActionMovies() {
+        return getMoviesByGenre("28");  // 액션 장르
+    }
+
+    public List<MovieMainDto> getComedyMovies() {
+        return getMoviesByGenre("35");  // 코미디 장르
+    }
+
+    public List<MovieMainDto> getRomanceMovies() {
+        return getMoviesByGenre("10749");  // 로맨스 장르
+    }
+
     // 스케줄러: 하루에 한 번만 API 호출 후 DB에 저장
-    @Scheduled(cron = "0 00 00 * * ?")  // 매일 00:00에 실행
+    @Scheduled(cron = "0 41 10 * * ?")  // 매일 00:00에 실행
     @Transactional
     public void scheduledSaveMovies() {
         try {
