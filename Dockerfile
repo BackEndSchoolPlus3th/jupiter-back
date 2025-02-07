@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y wget \
     && wget https://download.java.net/openjdk/jdk23/ri/openjdk-23_linux-x64_bin.tar.gz \
     && tar -xzf openjdk-23_linux-x64_bin.tar.gz -C /opt \
     && rm openjdk-23_linux-x64_bin.tar.gz \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
     # 캐시 정리
 
 # 환경 변수 설정
