@@ -8,7 +8,7 @@ spring:
     ansi:
       enabled: ALWAYS
   profiles:
-    active: dev
+    active: prod
     include: secret
   elasticsearch:
     uris: http://223.130.160.191:9200  # Elasticsearch 서버 주소
