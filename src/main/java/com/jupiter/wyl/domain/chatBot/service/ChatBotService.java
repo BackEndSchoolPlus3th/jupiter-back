@@ -98,10 +98,12 @@ public class ChatBotService {
     // 장르를 판단하는 메서드
     private String determineGenre(String userMessage) {
         if (userMessage.contains("액션")) {
-            return "28";
+            return "action";
         } else if (userMessage.contains("코미디")) {
-            return "35";
-        } else {
+            return "comedy";
+        } else if (userMessage.contains("애니메이션")) {
+            return "animation";}
+        else {
             return "0";
         }
     }
