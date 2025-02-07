@@ -4,7 +4,9 @@ FROM gradle:8.11.1-jdk21 as builder
 
 # Java 23 설치
 USER root
-RUN apt-get update && apt-get install -y openjdk-23-jdk
+RUN apt-get update && apt-get install -y openjdk-23-jdk && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*  \
+    # 캐시 정리
 
 # 환경 변수 설정
 ENV JAVA_HOME=/usr/lib/jvm/java-23-openjdk-amd64
@@ -37,6 +39,9 @@ FROM ghcr.io/graalvm/jdk-community:23
 
 # 작업 디렉토리 설정
 WORKDIR /app
+
+# Java 버전 확인 (디버깅 용)
+RUN java -version
 
 # 빌드된 JAR 파일 복사
 COPY --from=builder /app/build/libs/*.jar app.jar
