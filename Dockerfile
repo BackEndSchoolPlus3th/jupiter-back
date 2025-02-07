@@ -3,9 +3,13 @@ FROM gradle:8.11.1-jdk21 as builder
 # Gradle 8.11.1 + JDK 21
 
 # Java 23 설치
+# OpenJDK 23 설치
 USER root
-RUN apt-get update && apt-get install -y openjdk-23-jdk && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*  \
+RUN apt-get update && apt-get install -y wget \
+    && wget https://download.java.net/openjdk/jdk23/ri/openjdk-23_linux-x64_bin.tar.gz \
+    && tar -xzf openjdk-23_linux-x64_bin.tar.gz -C /opt \
+    && rm openjdk-23_linux-x64_bin.tar.gz \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* \
     # 캐시 정리
 
 # 환경 변수 설정
