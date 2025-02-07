@@ -162,6 +162,28 @@ public class MovieMainService {
         }
     }
 
+    public List<MovieMainDto> defaultMoviesByGenre(String genre) throws IOException {
+        logger.info(genre);
+        SearchResponse<Movie> response = elasticsearchClient.search(s -> s
+                        .index("movie_genres")  // 🔹 Elasticsearch에서 사용할 인덱스명 (변경 가능)
+                        .query(q -> q
+                                .bool(b -> b
+                                        .should(f -> f.wildcard(m -> m.field("genres").value("*" + genre + "*"))) // ✅ 부분 일치 검색
+                                )
+                        )
+                        .sort(SortOptions.of(sorts -> sorts
+                                .field(fields -> fields.field("popularity").order(SortOrder.Desc))
+                        ))
+                        .size(10), // 🔹 최대 10개 가져오기
+                Movie.class
+        );
+
+        return response.hits().hits().stream()
+                .map(Hit::source).filter(Objects::nonNull)
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
     public List<MovieMainDto> searchMoviesByGenre(String email, int index) throws IOException {
         String genre = memberService.getUserLikeGenres(email).split(",")[index];
         logger.info(genre);
