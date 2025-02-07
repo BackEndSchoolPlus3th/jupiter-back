@@ -6,6 +6,10 @@ spring:
     username: root
     password: root123414
     driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    mongodb:
+      uri: mongodb://172.17.0.1:27017/
+      database: chat
   jpa:
     hibernate:
       ddl-auto: update
