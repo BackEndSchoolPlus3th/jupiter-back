@@ -8,9 +8,3 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017/
       database: chat
-custom:
-  site:
-    name: "WYL"
-    cookieDomain: "${custom.prod.cookieDomain}"
-    frontUrl: "${custom.prod.frontUrl}"
-    backUrl: "${custom.prod.backUrl}"

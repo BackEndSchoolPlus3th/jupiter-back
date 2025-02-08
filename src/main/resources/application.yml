@@ -10,12 +10,16 @@ spring:
   profiles:
     active: dev
     include: secret
+  autoconfigure: # 로컬에서 실행할 때는 Redis와 Session 설정을 제외
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.session.SessionAutoConfiguration
   elasticsearch:
     uris: http://175.45.202.162:9200  # Elasticsearch 서버 주소
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         default_batch_fetch_size: 100
@@ -42,7 +46,7 @@ custom:
     frontUrl: "https://www.${custom.prod.cookiedomain}/"
     backUrl: "https://api.${custom.prod.cookiedomain}/"
   site:
-    name: "WYL DEV"
+    name: "WYL"
     cookieDomain: "${custom.dev.cookieDomain}"
     frontUrl: "${custom.dev.frontUrl}"
     backUrl: "${custom.dev.backUrl}"
