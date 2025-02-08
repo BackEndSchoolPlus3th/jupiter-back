@@ -4,11 +4,10 @@ on:
     paths:
       - '.github/workflows/**'
       - 'src/**'
-      - 'build.gradle.kts'
+      - 'build.gradle'
       - 'Dockerfile'
       - 'readme.md'
       - 'infraScript/**'
-#      - 'docker-compose.yml'  # docker-compose.yml 파일이 변경될 때만 트리거
     branches:
       - 'main'
 jobs:
@@ -89,19 +88,3 @@ jobs:
             curl -o /dockerProjects/wyl/zero_downtime_deploy.py https://raw.githubusercontent.com/BackEndSchoolPlus3th/jupiter-back/main/infraScript/zero_downtime_deploy.py
             chmod +x /dockerProjects/wyl/zero_downtime_deploy.py
             /dockerProjects/wyl/zero_downtime_deploy.py
-
-#  monitorDockerComposeChanges:
-#    name: Docker Compose 파일 변경 감지 및 Python 코드 실행
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - name: docker-compose.yml 변경 감지 및 Python 코드 실행
-#        run: |
-#          # 변경된 파일 목록에서 docker-compose.yml이 포함되었는지 확인
-#          if git diff --name-only HEAD~1 | grep -q 'docker-compose.yml'; then
-#            echo "docker-compose.yml 파일이 변경되었습니다. Python 코드 실행 중..."
-#            # Python 코드 실행
-#            python3 update_docker-compose.py
-#          else
-#            echo "docker-compose.yml 파일에 변경사항이 없습니다."
-#          fi
