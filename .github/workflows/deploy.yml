@@ -68,8 +68,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ env.OWNER_LC }}/wyl:${{ needs.makeTagAndRelease.outputs.tag_name }},
-            ghcr.io/${{ env.OWNER_LC }}/wyl:latest
+            ghcr.io/${{ env.OWNER_LC }}/jupiter-back:${{ needs.makeTagAndRelease.outputs.tag_name }},
+            ghcr.io/${{ env.OWNER_LC }}/jupiter-back:latest
   deploy:
     runs-on: ubuntu-latest
     needs: [ buildImageAndPush ]
