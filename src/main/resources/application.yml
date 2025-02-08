@@ -11,7 +11,7 @@ spring:
     active: dev
     include: secret
   elasticsearch:
-    uris: http://223.130.160.191:9200  # Elasticsearch 서버 주소
+    uris: http://175.45.202.162:9200  # Elasticsearch 서버 주소
   jpa:
     open-in-view: false
     hibernate:
