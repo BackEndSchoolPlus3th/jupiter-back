@@ -8,6 +8,7 @@ on:
       - 'Dockerfile'
       - 'readme.md'
       - 'infraScript/**'
+      - 'docker-compose.yml'
     branches:
       - 'main'
 jobs:
