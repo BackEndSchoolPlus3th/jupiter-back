@@ -31,6 +31,7 @@ public class ApiV1MemberController {
     // 회원가입
     @PostMapping("/signup")
     @ResponseBody
+    @CrossOrigin(origins = "http://localhost:5173")
     public RsData<MemberResponse> join(@Valid @RequestBody MemberJoinRequest userJoinRequest) {
         Member member = memberService.join(userJoinRequest.email(), userJoinRequest.nickname(), userJoinRequest.password());
         return new RsData<>("200", "%s님 환영합니다. 회원가입이 완료되었습니다.".formatted(member.getNickname()), new MemberResponse(member));
@@ -39,6 +40,7 @@ public class ApiV1MemberController {
     // 로그인
     @PostMapping("/login")
     @ResponseBody
+    @CrossOrigin(origins = "http://localhost:5173")
     public RsData<Void> login(@Valid @RequestBody MemberLoginRequest memberLoginRequest, HttpServletResponse response) {
         Member member = memberService.findByEmail(memberLoginRequest.email())
                 .orElseThrow(() -> new ServiceException(ExceptionCode.USER_EMAIL_NOT_FOUND)); // 존재하지 않는 이메일 예외 처리
@@ -72,6 +74,7 @@ public class ApiV1MemberController {
 
     // 로그아웃
     @GetMapping("/logout")
+    @CrossOrigin(origins = "http://localhost:5173")
     public RsData<Void> logout(HttpServletResponse response) {
         // 응답 데이터에 accessToken 이름으로 토큰을 발급
         Cookie cookie = new Cookie("accessToken", null);
@@ -88,6 +91,7 @@ public class ApiV1MemberController {
 
     // 내 정보 조회
     @GetMapping("/me")
+    @CrossOrigin(origins = "http://localhost:5173")
     public RsData<MemberResponse> me(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
 

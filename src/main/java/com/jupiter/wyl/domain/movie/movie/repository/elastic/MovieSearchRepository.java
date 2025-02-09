@@ -12,7 +12,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.awt.print.Pageable;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Repository("movieSearchRepository")
 public interface MovieSearchRepository extends ElasticsearchRepository<Movie, Long> {

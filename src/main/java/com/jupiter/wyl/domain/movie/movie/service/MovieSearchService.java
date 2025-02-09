@@ -119,7 +119,6 @@ public class MovieSearchService {
                 .withSort(s -> s.field(f -> f.field("release_date").order(SortOrder.Desc)))
                 .build();
 
-
         List<MovieSearchDto> movieSearchDtos = elasticsearchOperations.search(searchQuery, Movie.class).getSearchHits().stream()
                 .map(hit -> {
                     Movie movie = hit.getContent();

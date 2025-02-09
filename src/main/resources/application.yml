@@ -11,24 +11,22 @@ spring:
     active: dev
     include: secret
   datasource:
-    url: jdbc:mysql://localhost:3306/exam_db
+    url: jdbc:mysql://localhost:3306/exam_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: root
     password: root123414
     driver-class-name: com.mysql.cj.jdbc.Driver
+  elasticsearch:
+    uris: http://223.130.160.191:9200  # Elasticsearch 서버 주소
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         default_batch_fetch_size: 100
         format_sql: true
         highlight: true
         use_sql_comments: true
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/
-      database: chat
   websocket:
     enabled: true
 logging:
@@ -42,7 +40,7 @@ logging:
 custom:
   dev:
     cookieDomain: localhost
-    frontUrl: "http://${custom.dev.cookieDomain}:3000"
+    frontUrl: "http://${custom.dev.cookieDomain}:5173"
     backUrl: "http://${custom.dev.cookieDomain}:${server.port}"
   prod:
     cookieDomain: wyl.seoez.site
