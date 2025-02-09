@@ -15,12 +15,12 @@ spring:
     username: root
     password: root123414
     driver-class-name: com.mysql.cj.jdbc.Driver
-  elasticsearch:
-    uris: http://223.130.160.191:9200  # Elasticsearch 서버 주소
+#  elasticsearch: # 로컬 환경에서 테스트를 위해 임시 주석 처리, 배포 시 주석 처리 제외 필요
+#    uris: http://175.45.202.162:9200/  # Elasticsearch 서버 주소
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         default_batch_fetch_size: 100

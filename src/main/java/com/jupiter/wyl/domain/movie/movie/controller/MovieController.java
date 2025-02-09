@@ -52,11 +52,6 @@ public class MovieController {
         return movie;
     }
 
-//    @GetMapping("/review")
-//    public MovieDto getMovieReview() {
-//        MovieDto
-//    }
-
     @PostMapping("/review/write")
     public String receiveReview(@RequestBody ReviewRequest reviewRequest) {
         System.out.println("Received review: " + reviewRequest.getContent());
