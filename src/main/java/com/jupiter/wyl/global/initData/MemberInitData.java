@@ -22,7 +22,7 @@ public class MemberInitData {
             @Override
             public void run(ApplicationArguments args) throws Exception {
 
-                if (memberService.findByEmail("apple@aaa.aaa") == null) {
+                if (memberService.findByEmail("apple@aaa.aaa").isEmpty()) {
                     Member member1 = memberService.join("apple@aaa.aaa", "김호러", "123456");
                     Member member2 = memberService.join("banana@aaa.aaa", "이사랑", "123456");
                     Member member3 = memberService.join("cherry@aaa.aaa", "최웃음", "123456");
