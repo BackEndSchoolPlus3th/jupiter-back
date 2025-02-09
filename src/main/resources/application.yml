@@ -10,12 +10,17 @@ spring:
   profiles:
     active: dev
     include: secret
+  datasource:
+    url: jdbc:mysql://localhost:3306/exam_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: root
+    password: root123414
+    driver-class-name: com.mysql.cj.jdbc.Driver
   elasticsearch:
     uris: http://223.130.160.191:9200  # Elasticsearch 서버 주소
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         default_batch_fetch_size: 100

@@ -60,7 +60,7 @@ public class MovieSearchService {
                                 .poster_path(movie.getPoster_path())
                                 .original_language(movie.getOriginal_language())
                                 .original_country(findCountryName(movie.getOriginal_country()))
-                                .genres("임시")
+                                .genres(movie.getGenres())
                                 .build()
                 )
         );

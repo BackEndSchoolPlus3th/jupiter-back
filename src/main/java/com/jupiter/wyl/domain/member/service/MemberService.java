@@ -52,6 +52,24 @@ public class MemberService {
                 .password(passwordEncoder.encode(password))
                 .build();
 
+        // 가데이터 입력
+            switch(member.getEmail()){
+                case "apple@aaa.aaa" :
+                    member.setLikeGenres("공포,미스터리,스릴러");
+                    member.setLikeKeywords("cold,based on novel or book,gothic horror,desire,satire,aging,celebrity");
+                    break;
+                case "banana@aaa.aaa" :
+                    member.setLikeGenres("가족,모험,드라마,애니메이션");
+                    member.setLikeKeywords("witch,dancing,based on novel or book,college,bangkok,thailand,remake,italian");
+                    break;
+                case "cherry@aaa.aaa" :
+                    member.setLikeGenres("코미디,액션,SF");
+                    member.setLikeKeywords("moon,sequel,based on video game,holiday,kidnapping,santa claus,polar bear,christmas");
+                    break;
+            }
+
+        // 가데이터 입력 종료
+
         String refreshToken = jwtProvider.genRefreshToken(member);
         member.setRefreshToken(refreshToken);
 
@@ -79,4 +97,8 @@ public class MemberService {
         return new SecurityUser(id, nickname, "", authorities);
     }
 
+    // 멤버 정보
+    public String getUserLikeGenres(String email){
+        return memberRepository.findByEmail(email).get().getLikeGenres();
+    }
 }

@@ -1,5 +1,6 @@
 package com.jupiter.wyl.domain.movie.movie.document;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jupiter.wyl.domain.movie.movie.entity.MovieGenre;
 import com.jupiter.wyl.domain.movie.movie.entity.MovieReview;
 import jakarta.persistence.*;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(indexName = "movie")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {
     @Id
     private Long id; // API에서 제공하는 ID 사용
