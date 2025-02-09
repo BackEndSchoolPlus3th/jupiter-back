@@ -40,34 +40,36 @@ public class ApiV1MemberController {
     // 로그인
     @PostMapping("/login")
     @ResponseBody
-    @CrossOrigin(origins = "http://localhost:5173")
-    public RsData<Void> login(@Valid @RequestBody MemberLoginRequest memberLoginRequest, HttpServletResponse response) {
+    @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+    public RsData<Void> login(@Valid @RequestBody MemberLoginRequest memberLoginRequest, HttpServletRequest request, HttpServletResponse response) {
         Member member = memberService.findByEmail(memberLoginRequest.email())
                 .orElseThrow(() -> new ServiceException(ExceptionCode.USER_EMAIL_NOT_FOUND)); // 존재하지 않는 이메일 예외 처리
 
         if(!passwordEncoder.matches(memberLoginRequest.password(), member.getPassword())) {
             throw new ServiceException(ExceptionCode.USER_INVALID_PASSWORD); // 비밀번호 불일치 예외처리
         }
+        System.out.println(memberLoginRequest.email());
 
         // 토큰 생성
         String token = jwtProvider.genAccessToken(member);
-
         // 응답 데이터에 accessToken 이름으로 토큰 발급 (쿠키 설정 : 보안, 경로, 유효기간)
         Cookie cookie = new Cookie("accessToken", token);
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
+        cookie.setSecure(false); // 로컬 테스트를 위해 false설정, 배포 시 true로 변경 필요
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60);
         response.addCookie(cookie);
-
+        System.out.println(cookie.getName());
+        System.out.println("쿠키를 추가합니다: " + cookie.getName() + "=" + cookie.getValue());
         // refreshToken 이름으로 토큰 발급
         String refreshToken = jwtProvider.genRefreshToken(member);
         Cookie refreshCookie = new Cookie("refreshToken", refreshToken);
         refreshCookie.setHttpOnly(true);
-        refreshCookie.setSecure(true);
+        cookie.setSecure(false); // 로컬 테스트를 위해 false설정, 배포 시 true로 변경 필요
         refreshCookie.setPath("/");
         refreshCookie.setMaxAge(60 * 60);
         response.addCookie(refreshCookie);
+        System.out.println(refreshCookie.getName());
 
         return new RsData<>("200", "로그인 성공");
     }
@@ -108,5 +110,28 @@ public class ApiV1MemberController {
         Member member = this.memberService.findByEmail(email).orElseThrow(() -> new ServiceException(ExceptionCode.USER_EMAIL_NOT_FOUND));
         return new RsData<>("200", "회원 정보 조회 성공", new MemberResponse(member));
     }
+    
+    // 쿠키 확인용 테스트
+    @GetMapping("/cookie")
+    @ResponseBody
+    @CrossOrigin(origins = "http://localhost:5173")
+    public RsData<Void> cookietest(HttpServletRequest request, HttpServletResponse response) {
+        // 응답 데이터에 accessToken 이름으로 토큰 발급 (쿠키 설정 : 보안, 경로, 유효기간)
+        Cookie cookie = new Cookie("Cookie22","test");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false); // 로컬 테스트를 위해 false설정, 배포 시 true로 변경 필요
+        cookie.setPath("/");
+        cookie.setMaxAge(60 * 60);
+        response.addCookie(cookie);
 
+        // refreshToken 이름으로 토큰 발급
+        Cookie cookie2 = new Cookie("Cookie","test22");
+        cookie2.setHttpOnly(true);
+        cookie2.setSecure(false); // 로컬 테스트를 위해 false설정, 배포 시 true로 변경 필요
+        cookie2.setPath("/");
+        cookie2.setMaxAge(60 * 60);
+        response.addCookie(cookie2);
+
+        return new RsData<>("200", "쿠키생성 성공");
+    }
 }

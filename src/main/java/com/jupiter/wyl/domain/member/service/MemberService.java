@@ -42,7 +42,8 @@ public class MemberService {
         if (CheckedSignUpMember != null) {
             throw new ServiceException(ExceptionCode.EMAIL_ALREADY_REGISTERED);
         } else if (CheckedSignUpMemberNickname != null) {
-            throw new ServiceException(ExceptionCode.NICKNAME_ALREADY_TAKEN);
+            nickname="이름없는 어피치";
+//            throw new ServiceException(ExceptionCode.NICKNAME_ALREADY_TAKEN); // 닉네임은 중복이어도 무관, 현재 서비스 회원가입 창에 닉네임을 별도로 설정하는 곳이 없으므로 주석 처리.
         }
 
         Member member = Member.builder()
@@ -95,6 +96,15 @@ public class MemberService {
         String nickname = (String) payloadBody.get("nickname");
         List<GrantedAuthority> authorities = new ArrayList<>();
         return new SecurityUser(id, nickname, "", authorities);
+    }
+
+    // 토큰으로 User의 이메일 정보 가져오기
+    public SecurityUser getEmailFromAccessToken(String accessToken) {
+        Map<String, Object> payloadBody = jwtProvider.getClaims(accessToken);
+        long id = (int) payloadBody.get("id");
+        String email = (String) payloadBody.get("email");
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        return new SecurityUser(id, email, "", authorities);
     }
 
     // 멤버 정보
