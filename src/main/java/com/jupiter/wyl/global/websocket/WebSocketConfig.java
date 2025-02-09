@@ -1,5 +1,6 @@
 package com.jupiter.wyl.global.websocket;
 
+import com.jupiter.wyl.global.app.AppConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -19,7 +20,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/chat")  // 클라이언트가 연결할 엔드포인트
-                .setAllowedOrigins("http://localhost:5173")  // 클라이언트 URL을 정확히 허용
+                .setAllowedOrigins("http://localhost:5173", AppConfig.getSiteFrontUrl())  // 클라이언트 URL을 정확히 허용
                 .withSockJS();
     }
 }
