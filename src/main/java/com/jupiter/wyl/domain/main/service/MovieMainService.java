@@ -3,14 +3,12 @@ package com.jupiter.wyl.domain.main.service;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
-import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.MatchPhraseQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.jupiter.wyl.domain.main.dto.MovieMainDto;
+import com.jupiter.wyl.domain.main.dto.MovieRecommandDto;
 import com.jupiter.wyl.domain.main.dto.response.MovieMainResponse;
 import com.jupiter.wyl.domain.main.entity.MovieMain;
 import com.jupiter.wyl.domain.main.repository.MovieMainRepository;
@@ -165,7 +163,7 @@ public class MovieMainService {
     }
 
     // 사용자의 정보가 없는 기본 장르 검색 메소드
-    public List<MovieMainDto> defaultMoviesByGenre(String genre) throws IOException {
+    public List<MovieRecommandDto> defaultMoviesByGenre(String genre) throws IOException {
         logger.info(genre);
         SearchResponse<Movie> response = elasticsearchClient.search(s -> s
                         .index("movie_genres")  // 🔹 Elasticsearch에서 사용할 인덱스명 (변경 가능)
@@ -188,7 +186,7 @@ public class MovieMainService {
     }
 
     // 사용자의 정보가 있어 저장된 선호 장르 데이터에서 장르를 가져오는 메소드
-    public List<MovieMainDto> searchMoviesByGenre(String email, int index) throws IOException {
+    public List<MovieRecommandDto> searchMoviesByGenre(String email, int index) throws IOException {
         String genre = memberService.getUserLikeGenres(email).split(",")[index];
         logger.info(genre);
         SearchResponse<Movie> response = elasticsearchClient.search(s -> s
@@ -212,40 +210,67 @@ public class MovieMainService {
     }
 
     // 사용자의 정보가 있어 저장된 선호 키워드, 장르 데이터에서 장르를 가져오는 메소드
-    public List<MovieMainDto> searchMoviesByKeyword(String email) throws IOException {
+    public List<MovieRecommandDto> searchMoviesByKeyword(String email) throws IOException {
         Member member = memberService.findByEmail(email).get();
         String genre = member.getLikeGenres().split(",")[0];
         String keyword1 = member.getLikeKeywords().split(",")[0];
         String keyword2 = member.getLikeKeywords().split(",")[1];
+        String keyword3 = member.getLikeKeywords().split(",")[2];
+        System.out.println("kw1: "+ keyword1);
+        System.out.println("kw2: "+ keyword2);
+        System.out.println("gr: "+ genre);
 
         // 1️⃣ 반드시 포함해야 하는 키워드 (must)
-        Query mustKeywordQuery = MatchQuery.of(m -> m
-                .field("title")
+//        Query mustKeywordQuery = MatchQuery.of(m -> m
+//                .field("keywords")
+//                .query(keyword1)
+//        )._toQuery();
+
+        Query shouldKeywordQuery1 = MatchPhraseQuery.of(m -> m
+                .field("keywords")
                 .query(keyword1)
+                .slop(3)
+                .boost(2.5f)  // 가중치 2.5배
+        )._toQuery();
+        //
+        Query shouldKeywordQuery2 = MatchPhraseQuery.of(m -> m
+                .field("keywords")
+                .query(keyword2)
+                .slop(3)
+                .boost(2.0f)  // 가중치 2배
         )._toQuery();
 
+
         // 2️⃣ 있으면 점수를 올리는 키워드 (should)
-        Query shouldKeywordQuery = MatchPhraseQuery.of(m -> m
-                .field("title")
-                .query(keyword2)
-                .slop(2)
-                .boost(2.0f)  // 가중치 2배
+        Query shouldKeywordQuery3 = MatchPhraseQuery.of(m -> m
+                .field("keywords")
+                .query(keyword3)
+                .slop(3)
+                .boost(1.5f)  // 가중치 1.5배
+        )._toQuery();
+
+        // 2️⃣ 있으면 제외하는 키워드 (should)
+        Query mustKeywordQuery = MatchQuery.of(m -> m
+                .field("keywords")
+                .query("erotic")
         )._toQuery();
 
         // 3️⃣ 장르가 포함되면 점수를 올림 (should)
         Query shouldGenreQuery = MatchQuery.of(m -> m
                 .field("genres")
                 .query(genre)
-                .boost(1.5f)  // 가중치 1.5배
+                .boost(1f)  // 가중치 1배
         )._toQuery();
 
         // 4️⃣ Bool 쿼리 조합
         Query boolQuery = BoolQuery.of(b -> b
-                .must(mustKeywordQuery)  // 필수 조건
-                .should(shouldKeywordQuery) // 키워드2 점수 증가
-                .should(shouldGenreQuery) // 장르 점수 증가
-                .minimumShouldMatch("1") // 최소 하나의 should 조건 충족 시 검색 결과 포함
+                .should(shouldKeywordQuery1) // 키워드1 점수 증가
+                .should(shouldKeywordQuery2)  //  키워드2 점수 증가
+                .should(shouldKeywordQuery3) // 키워드3 점수 증가
+                .mustNot(mustKeywordQuery) // 키워드4 점수 감소
+                .minimumShouldMatch("50%") // 최소 하나의 should 조건 충족 시 검색 결과 포함
         )._toQuery();
+
 
         // 5️⃣ 검색 요청 생성
         SearchRequest searchRequest = SearchRequest.of(s -> s
@@ -258,6 +283,7 @@ public class MovieMainService {
                                 .order(SortOrder.Desc)  // popularity 내림차순 정렬
                         )
                 ))
+                .explain(true)  // 설명 추가
         );
 
         // 6️⃣ Elasticsearch 검색 실행
@@ -270,11 +296,13 @@ public class MovieMainService {
     }
 
     // 🔹 Movie → MovieMainDto 변환 메서드
-    private MovieMainDto convertToDto(Movie movie) {
-        return new MovieMainDto(
+    private MovieRecommandDto convertToDto(Movie movie) {
+        return new MovieRecommandDto(
                 movie.getId(),
                 movie.getTitle(),
                 movie.getOverview(),
+                movie.getGenres(),
+                movie.getKeywords(),
                 movie.getPoster_path()
         );
     }

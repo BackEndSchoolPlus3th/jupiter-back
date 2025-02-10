@@ -1,6 +1,7 @@
 package com.jupiter.wyl.domain.main.controller;
 
 import com.jupiter.wyl.domain.main.dto.MovieMainDto;
+import com.jupiter.wyl.domain.main.dto.MovieRecommandDto;
 import com.jupiter.wyl.domain.main.service.MovieMainService;
 import com.jupiter.wyl.domain.member.entity.Member;
 import com.jupiter.wyl.domain.member.service.MemberService;
@@ -44,7 +45,6 @@ public class ApiV1MovieMainController {
     private final MemberService memberService;
 
     @GetMapping("/api/v1/movie/popular")
-    @CrossOrigin(origins = "http://localhost:5173")
     public List<MovieMainDto> getPopularMovies() {
         return movieMainService.getPopularMovies();
     }
@@ -63,7 +63,7 @@ public class ApiV1MovieMainController {
 
     @GetMapping("/api/v1/movie/likes_keyword")
     @CrossOrigin(origins = "http://localhost:5173")
-    public List<MovieMainDto> getMoviesByLikeKeyword(HttpServletRequest request) throws IOException {
+    public List<MovieRecommandDto> getMoviesByLikeKeyword(HttpServletRequest request) throws IOException {
         Cookie[] cookies = request.getCookies();
         String accessToken = "";
 
@@ -75,11 +75,11 @@ public class ApiV1MovieMainController {
                 }
             }
         }
-
-        if (accessToken.isBlank()) {
-            // 토큰이 없으면 기본 영화 목록 반환
-            return movieMainService.defaultMoviesByGenre("SF");
-        }
+//           테스트를 위해 임시 주석
+//        if (accessToken.isBlank()) {
+//            // 토큰이 없으면 기본 영화 목록 반환
+//            return movieMainService.defaultMoviesByGenre("SF");
+//        }
 
         // JWT 토큰을 검증하고 이메일을 추출
         String email = null;
@@ -88,7 +88,9 @@ public class ApiV1MovieMainController {
             System.out.println("사용자 이메일: "+email);
         } catch (Exception e) {
             // 토큰이 유효하지 않거나 이메일 추출 실패 시 기본 영화 목록 반환
-            return movieMainService.defaultMoviesByGenre("SF");
+//           테스트를 위해 임시 주석
+//            return movieMainService.defaultMoviesByGenre("SF");
+            email="banana@aaa.aaa";
         }
 
         return movieMainService.searchMoviesByKeyword(email);  // 이메일을 기준으로 장르 영화 반환
@@ -97,7 +99,7 @@ public class ApiV1MovieMainController {
 
     @GetMapping("/api/v1/movie/likes")
     @CrossOrigin(origins = "http://localhost:5173")
-    public List<MovieMainDto> getMoviesByLikeGenre(HttpServletRequest request) throws IOException {
+    public List<MovieRecommandDto> getMoviesByLikeGenre(HttpServletRequest request) throws IOException {
         Cookie[] cookies = request.getCookies();
         String accessToken = "";
 
@@ -133,7 +135,7 @@ public class ApiV1MovieMainController {
 
     @GetMapping("/api/v1/movie/likes_2nd")
     @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
-    public List<MovieMainDto> getMoviesByLikeGenre_2nd(HttpServletRequest request) throws IOException {
+    public List<MovieRecommandDto> getMoviesByLikeGenre_2nd(HttpServletRequest request) throws IOException {
         Cookie[] cookies = request.getCookies();
         String accessToken = "";
 
