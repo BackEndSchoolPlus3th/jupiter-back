@@ -1,10 +1,15 @@
 package com.jupiter.wyl.domain.movie.movie.service;
 
+import com.jupiter.wyl.domain.chatBot.entity.Message;
+import com.jupiter.wyl.domain.movie.movie.dto.request.ReviewRequest;
 import com.jupiter.wyl.domain.movie.movie.dto.response.*;
 import com.jupiter.wyl.domain.movie.movie.entity.Movie;
 import com.jupiter.wyl.domain.movie.movie.entity.MovieGenre;
+import com.jupiter.wyl.domain.movie.movie.entity.MovieReview;
 import com.jupiter.wyl.domain.movie.movie.repository.jpa.MovieRepository;
+import com.jupiter.wyl.domain.movie.movie.repository.jpa.MovieReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -12,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +28,9 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class MovieService {
+
+    @Autowired
+    private final MovieReviewRepository movieReviewRepository;
     private final MovieRepository movieRepository;
     private final MovieGenreService movieGenreService;
 
@@ -198,9 +207,13 @@ public class MovieService {
                 .vote_count(movie.getVote_count())
                 .original_country(movie.getOriginal_country())
                 .original_language(movie.getKeywords())
-                .genres(movie.getActors())
+                .genres(movie.getGenres())
+                .actors(movie.getActors())
+                .director(movie.getDirector())
                 .build();
         return movieDto;
     }
+
+
 
 }
