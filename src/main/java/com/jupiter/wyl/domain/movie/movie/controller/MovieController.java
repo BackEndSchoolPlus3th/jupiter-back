@@ -1,13 +1,17 @@
 package com.jupiter.wyl.domain.movie.movie.controller;
 
 
+import com.jupiter.wyl.domain.movie.movie.document.Movie;
 import com.jupiter.wyl.domain.movie.movie.dto.request.ReviewRequest;
 
 import com.jupiter.wyl.domain.movie.movie.dto.response.MovieDto;
+import com.jupiter.wyl.domain.movie.movie.dto.response.MovieReviewDto;
 import com.jupiter.wyl.domain.movie.movie.dto.response.MovieSearchDto;
 import com.jupiter.wyl.domain.movie.movie.service.MovieSearchService;
 import com.jupiter.wyl.domain.movie.movie.service.MovieService;
+import com.jupiter.wyl.domain.movie.movie.service.MovieReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MovieController {
     private final MovieService movieService;
+    private final MovieReviewService movieReviewService;
     private final MovieSearchService movieSearchService;
 
     @GetMapping
@@ -37,22 +42,34 @@ public class MovieController {
         return movieSearchDtos;
     }
 
+    @GetMapping("/search/latest")
+    public List<MovieSearchDto> findByTitleOrOverviewOrActorsOrDirectorLatest(@RequestParam("word") String word){
+        List<MovieSearchDto> movieSearchDtos = movieSearchService.findByTitleOrOverviewOrActorsOrDirectorLatest(word);
+        return movieSearchDtos;
+    }
+
     @GetMapping("/{id}")
     public MovieDto getMovie(@PathVariable("id") Long id) {
         MovieDto movie = movieService.findById(id);
-        //System.out.println(movie.toString());
         return movie;
     }
 
-//    @GetMapping("/review")
-//    public MovieDto getMovieReview() {
-//        MovieDto
-//    }
+    @GetMapping("/review/{movieId}")
+    public List<MovieReviewDto> getMovieReview(@PathVariable("movieId") Long movieId) {
+        List<MovieReviewDto> movieReviews = movieReviewService.findAllByMovieId(movieId);
+        return movieReviews;
+    }
 
     @PostMapping("/review/write")
     public String receiveReview(@RequestBody ReviewRequest reviewRequest) {
-        System.out.println("Received review: " + reviewRequest.getContent());
-        // db에 저장 필요
-        return "리뷰가 성공적으로 저장되었습니다!";
+
+        String reviewContent = reviewRequest.getReviewContent();
+        int rating = reviewRequest.getRating();
+        long userId = reviewRequest.getUserId();
+        Long movie = reviewRequest.getMovie();
+
+        movieReviewService.saveReview(userId, reviewContent, rating, movie);
+
+        return "-----------------------review-write-success----------------------------";
     }
 }
