@@ -14,8 +14,6 @@ spring:
     exclude:
       - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
       - org.springframework.boot.autoconfigure.session.SessionAutoConfiguration
-  elasticsearch:
-    uris: http://211.188.55.180:9200  # Elasticsearch 서버 주소
   jpa:
     open-in-view: false
     hibernate:
