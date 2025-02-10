@@ -22,20 +22,21 @@ public class MemberInitData {
             @Override
             public void run(ApplicationArguments args) throws Exception {
 
+                // 가데이터 입력 종료
+
                 if (memberService.findByEmail("apple@aaa.aaa").isEmpty()) {
                     Member member1 = memberService.join("apple@aaa.aaa", "김호러", "123456");
                     Member member2 = memberService.join("banana@aaa.aaa", "이사랑", "123456");
                     Member member3 = memberService.join("cherry@aaa.aaa", "최웃음", "123456");
 
-                    //가데이터 입력
-                    member1.setLikeGenres("공포,스릴러,로맨스");
-                    member1.setLikeKeywords("없음");
+                    member1.setLikeGenres("공포,미스터리,스릴러");
+                    member1.setLikeKeywords("cold,based on novel or book,gothic horror,desire,satire,aging,celebrity");
 
-                    member1.setLikeGenres("로맨스,드라마,모험,코미디");
-                    member1.setLikeKeywords("없음");
+                    member2.setLikeGenres("가족,모험,드라마,애니메이션");
+                    member2.setLikeKeywords("witch,dancing,based on novel or book,college,bangkok,thailand,remake,italian");
 
-                    member1.setLikeGenres("액션,가족,애니메이션");
-                    member1.setLikeKeywords("없음");
+                    member3.setLikeGenres("코미디,액션,SF");
+                    member3.setLikeKeywords("moon,sequel,based on video game,holiday,kidnapping,santa claus,polar bear,christmas");
                 }
             }
         };
