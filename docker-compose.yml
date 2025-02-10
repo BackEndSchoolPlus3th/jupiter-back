@@ -1,10 +1,11 @@
-name: jupiter-back
+version: '3'
+
 services:
   mysql:
     image: mysql:9.2.0
     container_name: mysql_1
     environment:
-      MYSQL_ROOT_PASSWORD: root123414
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: exam_db
     ports:
       - "3306:3306"
@@ -35,7 +36,7 @@ services:
       - "6379:6379"
     environment:
       - TZ=Asia/Seoul
-      - REDIS_PASSWORD=wyl123414
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
     command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]  # 비밀번호 강제 설정
 
   npm:
