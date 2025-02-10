@@ -44,25 +44,21 @@ public class ApiV1MovieMainController {
     private final MemberService memberService;
 
     @GetMapping("/api/v1/movie/popular")
-    @CrossOrigin(origins = "http://localhost:5173")
     public List<MovieMainDto> getPopularMovies() {
         return movieMainService.getPopularMovies();
     }
 
     @GetMapping("/api/v1/movie/top-rated")
-    @CrossOrigin(origins = "http://localhost:5173")
     public List<MovieMainDto> getTopRatedMovies() {
         return movieMainService.getTopRatedMovies();
     }
 
     @GetMapping("/api/v1/movie/genre/{genreId}")
-    @CrossOrigin(origins = "http://localhost:5173")
     public List<MovieMainDto> getMoviesByGenre(@PathVariable String genreId) {
         return movieMainService.getMoviesByGenre(genreId);
     }
 
     @GetMapping("/api/v1/movie/likes")
-    @CrossOrigin(origins = "http://localhost:5173")
     public List<MovieMainDto> getMoviesByLikeGenre(HttpServletRequest request) throws IOException {
         Cookie[] cookies = request.getCookies();
         String accessToken = "";
