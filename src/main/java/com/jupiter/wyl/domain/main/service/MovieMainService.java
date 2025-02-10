@@ -3,6 +3,11 @@ package com.jupiter.wyl.domain.main.service;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
+import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.MatchPhraseQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.jupiter.wyl.domain.main.dto.MovieMainDto;
@@ -11,15 +16,13 @@ import com.jupiter.wyl.domain.main.entity.MovieMain;
 import com.jupiter.wyl.domain.main.repository.MovieMainRepository;
 import com.jupiter.wyl.domain.member.service.MemberService;
 import com.jupiter.wyl.domain.movie.movie.document.Movie;
+import com.jupiter.wyl.domain.member.entity.Member;
 import com.jupiter.wyl.domain.movie.movie.repository.elastic.MovieSearchRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +30,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -162,6 +164,7 @@ public class MovieMainService {
         }
     }
 
+    // 사용자의 정보가 없는 기본 장르 검색 메소드
     public List<MovieMainDto> defaultMoviesByGenre(String genre) throws IOException {
         logger.info(genre);
         SearchResponse<Movie> response = elasticsearchClient.search(s -> s
@@ -184,6 +187,7 @@ public class MovieMainService {
                 .collect(Collectors.toList());
     }
 
+    // 사용자의 정보가 있어 저장된 선호 장르 데이터에서 장르를 가져오는 메소드
     public List<MovieMainDto> searchMoviesByGenre(String email, int index) throws IOException {
         String genre = memberService.getUserLikeGenres(email).split(",")[index];
         logger.info(genre);
@@ -200,6 +204,64 @@ public class MovieMainService {
                         .size(10), // 🔹 최대 10개 가져오기
                 Movie.class
         );
+
+        return response.hits().hits().stream()
+                .map(Hit::source).filter(Objects::nonNull)
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    // 사용자의 정보가 있어 저장된 선호 키워드, 장르 데이터에서 장르를 가져오는 메소드
+    public List<MovieMainDto> searchMoviesByKeyword(String email) throws IOException {
+        Member member = memberService.findByEmail(email).get();
+        String genre = member.getLikeGenres().split(",")[0];
+        String keyword1 = member.getLikeKeywords().split(",")[0];
+        String keyword2 = member.getLikeKeywords().split(",")[1];
+
+        // 1️⃣ 반드시 포함해야 하는 키워드 (must)
+        Query mustKeywordQuery = MatchQuery.of(m -> m
+                .field("title")
+                .query(keyword1)
+        )._toQuery();
+
+        // 2️⃣ 있으면 점수를 올리는 키워드 (should)
+        Query shouldKeywordQuery = MatchPhraseQuery.of(m -> m
+                .field("title")
+                .query(keyword2)
+                .slop(2)
+                .boost(2.0f)  // 가중치 2배
+        )._toQuery();
+
+        // 3️⃣ 장르가 포함되면 점수를 올림 (should)
+        Query shouldGenreQuery = MatchQuery.of(m -> m
+                .field("genres")
+                .query(genre)
+                .boost(1.5f)  // 가중치 1.5배
+        )._toQuery();
+
+        // 4️⃣ Bool 쿼리 조합
+        Query boolQuery = BoolQuery.of(b -> b
+                .must(mustKeywordQuery)  // 필수 조건
+                .should(shouldKeywordQuery) // 키워드2 점수 증가
+                .should(shouldGenreQuery) // 장르 점수 증가
+                .minimumShouldMatch("1") // 최소 하나의 should 조건 충족 시 검색 결과 포함
+        )._toQuery();
+
+        // 5️⃣ 검색 요청 생성
+        SearchRequest searchRequest = SearchRequest.of(s -> s
+                .index("movie_genres")  // 검색할 인덱스 지정
+                .query(boolQuery)
+                .size(10)  // 최대 10개 반환
+                .sort(SortOptions.of(sort -> sort
+                        .field(f -> f
+                                .field("popularity")
+                                .order(SortOrder.Desc)  // popularity 내림차순 정렬
+                        )
+                ))
+        );
+
+        // 6️⃣ Elasticsearch 검색 실행
+        SearchResponse<Movie> response = elasticsearchClient.search(searchRequest, Movie.class);
 
         return response.hits().hits().stream()
                 .map(Hit::source).filter(Objects::nonNull)
