@@ -20,7 +20,7 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: vaildate
+      ddl-auto: update
   autoconfigure: # 로컬에서 실행할 때는 Redis와 Session 설정을 제외
     exclude:
       - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
