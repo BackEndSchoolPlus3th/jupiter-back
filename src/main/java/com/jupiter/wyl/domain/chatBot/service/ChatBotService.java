@@ -7,6 +7,7 @@ import com.jupiter.wyl.domain.chatBot.repository.ChatBotRepository;
 import com.jupiter.wyl.domain.main.dto.MovieMainDto;
 import com.jupiter.wyl.domain.main.service.MovieGenreMainService;
 import com.jupiter.wyl.domain.main.service.MovieMainService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ChatBotService {
 
     @Value("${spring.ai.openai.api-key}")
@@ -29,13 +31,6 @@ public class ChatBotService {
     private final MovieGenreMainService movieGenreMainService;
     private final RestTemplate restTemplate;
     private final ChatBotRepository chatBotRepository;
-
-    public ChatBotService(MovieMainService movieMainService, MovieGenreMainService movieGenreMainService, RestTemplate restTemplate, ChatBotRepository chatBotRepository) {
-        this.movieMainService = movieMainService;
-        this.movieGenreMainService = movieGenreMainService;
-        this.restTemplate = restTemplate;
-        this.chatBotRepository = chatBotRepository;
-    }
 
     public String getChatGptMovieResponse(String userId, String userMessage) {
         String responseMessage = "";

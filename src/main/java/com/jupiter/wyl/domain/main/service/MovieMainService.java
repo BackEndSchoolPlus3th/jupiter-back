@@ -50,16 +50,6 @@ public class MovieMainService {
     private final MemberService memberService;
     private static final String BASE_URL = "https://api.themoviedb.org/3";
 
-    // Popular 영화 가져오기
-    public List<MovieMainDto> getPopularMovies() {
-        return getMovies("popular");
-    }
-
-    // TopRated 영화 가져오기
-    public List<MovieMainDto> getTopRatedMovies() {
-        return getMovies("top_rated");
-    }
-
     // 영화 데이터 가져오기: API에서 가져오거나 DB에서 가져오기
     public List<MovieMainDto> getMovies(String category) {
         List<MovieMain> movieMainList = movieMainRepository.findByCategory(category);
@@ -152,18 +142,6 @@ public class MovieMainService {
             logger.error("API 호출 실패: {}", e.getMessage());
             throw new RuntimeException("영화 데이터를 가져오는 데 실패했습니다.", e);
         }
-    }
-
-    // 영화 데이터 가져오기: API에서 가져오거나 DB에서 가져오기
-    public List<MovieMainDto> getMovies(String category) {
-        List<MovieMainDto> movies = fetchMoviesFromApi(category);
-        if (movies.isEmpty()) {
-            // DB에 데이터가 없으면 API에서 데이터를 가져와서 저장
-            logger.info("DB에 데이터가 없어서 API에서 데이터를 가져옵니다. 카테고리: {}", category);
-            movies = fetchMoviesFromApi(category);
-            saveMoviesToDatabase(movies, category);  // API에서 가져온 데이터 저장
-        }
-        return movies;
     }
 
     // Popular 영화 가져오기

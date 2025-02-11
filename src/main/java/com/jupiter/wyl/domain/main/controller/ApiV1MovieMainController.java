@@ -43,12 +43,6 @@ public class ApiV1MovieMainController {
 
     private final MovieMainService movieMainService;
     private final MovieGenreMainService movieGenreMainService;
-    private final MovieGenreMainService movieGenreMainService;
-
-    public ApiV1MovieMainController(MovieMainService movieMainService, MovieGenreMainService movieGenreMainService) {
-        this.movieMainService = movieMainService;
-        this.movieGenreMainService = movieGenreMainService;
-    }
     private final MemberService memberService;
 
     @GetMapping("/api/v1/movie/popular")
@@ -64,19 +58,19 @@ public class ApiV1MovieMainController {
     }
 
     @GetMapping("/api/v1/movie/genre/action")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:5173")
     public List<MovieMainDto> getActionMovies() {
         return movieGenreMainService.getActionMovies();
     }
 
     @GetMapping("/api/v1/movie/genre/comedy")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:5173")
     public List<MovieMainDto> getComedyMovies() {
         return movieGenreMainService.getComedyMovies();
     }
 
     @GetMapping("/api/v1/movie/genre/animation")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:5173")
     public List<MovieMainDto> getAnimationMovies() {
         return movieGenreMainService.getAnimationMovies();
     }
