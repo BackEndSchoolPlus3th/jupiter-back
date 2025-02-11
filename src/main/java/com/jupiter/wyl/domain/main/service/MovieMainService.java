@@ -172,8 +172,8 @@ public class MovieMainService {
             List<MovieMainDto> comedyMovies = getMoviesByGenre("35");  // 코미디 장르
             saveMoviesToDatabase(comedyMovies, "comedy");
 
-            List<MovieMainDto> romanceMovies = getMoviesByGenre("10749");  // 로맨스 장르
-            saveMoviesToDatabase(romanceMovies, "romance");
+            List<MovieMainDto> romanceMovies = getMoviesByGenre("16");  // 로맨스 장르
+            saveMoviesToDatabase(romanceMovies, "animation");
 
             logger.info("영화 데이터를 스케줄러로 성공적으로 저장했습니다.");
         } catch (Exception e) {
