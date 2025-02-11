@@ -1,17 +1,18 @@
 package com.jupiter.wyl.domain.movie.movie.controller;
 
 
-import com.jupiter.wyl.domain.movie.movie.document.Movie;
-import com.jupiter.wyl.domain.movie.movie.dto.request.ReviewRequest;
+import com.jupiter.wyl.domain.member.service.MemberService;
+import com.jupiter.wyl.domain.movie.movie.dto.request.MovieReviewRequest;
 
 import com.jupiter.wyl.domain.movie.movie.dto.response.MovieDto;
 import com.jupiter.wyl.domain.movie.movie.dto.response.MovieReviewDto;
 import com.jupiter.wyl.domain.movie.movie.dto.response.MovieSearchDto;
+import com.jupiter.wyl.domain.movie.movie.entity.MovieReview;
 import com.jupiter.wyl.domain.movie.movie.service.MovieSearchService;
 import com.jupiter.wyl.domain.movie.movie.service.MovieService;
 import com.jupiter.wyl.domain.movie.movie.service.MovieReviewService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class MovieController {
     private final MovieService movieService;
     private final MovieReviewService movieReviewService;
     private final MovieSearchService movieSearchService;
+    private final MemberService memberService;
 
     @GetMapping
     public List<MovieDto> findAllMovies(){
@@ -54,22 +56,37 @@ public class MovieController {
         return movie;
     }
 
-    @GetMapping("/review/{movieId}")
+    @GetMapping("/reviews/{movieId}")
     public List<MovieReviewDto> getMovieReview(@PathVariable("movieId") Long movieId) {
         List<MovieReviewDto> movieReviews = movieReviewService.findAllByMovieId(movieId);
         return movieReviews;
     }
 
     @PostMapping("/review/write")
-    public String receiveReview(@RequestBody ReviewRequest reviewRequest) {
+    public String receiveReview(@RequestBody MovieReviewRequest reviewRequest) {
+        String userEmail = reviewRequest.getUser();
+
+        Long userId = memberService.getUserIdByEmail(userEmail);
 
         String reviewContent = reviewRequest.getReviewContent();
         int rating = reviewRequest.getRating();
-        long userId = reviewRequest.getUserId();
         Long movie = reviewRequest.getMovie();
 
         movieReviewService.saveReview(userId, reviewContent, rating, movie);
 
         return "-----------------------review-write-success----------------------------";
     }
+
+    @GetMapping("/review/{userEmail}/{movieId}")
+    public ResponseEntity<MovieReviewDto> getMovieReviewByEmail(@PathVariable("userEmail") String userEmail, @PathVariable("movieId") Long movieId) {
+
+        System.out.println("User Email: " + userEmail);
+        System.out.println("Movie ID: " + movieId);
+
+        Long userId = memberService.getUserIdByEmail(userEmail);
+
+        MovieReviewDto reviewDto = movieReviewService.getReviewByUserAndMovie(userId, movieId);
+        return ResponseEntity.ok(reviewDto);
+    }
+
 }

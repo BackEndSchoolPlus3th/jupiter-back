@@ -6,12 +6,14 @@ import com.jupiter.wyl.domain.movie.movie.entity.Movie;
 import com.jupiter.wyl.domain.movie.movie.entity.MovieReview;
 import com.jupiter.wyl.domain.movie.movie.repository.jpa.MovieRepository;
 import com.jupiter.wyl.domain.movie.movie.repository.jpa.MovieReviewRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,5 +55,12 @@ public class MovieReviewService {
                         .userId(review.getUserId())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public MovieReviewDto getReviewByUserAndMovie(Long userId, Long movieId) {
+        MovieReview movieReview = movieReviewRepository.findByUserIdAndMovieId(userId, movieId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 리뷰를 찾을 수 없습니다."));
+
+        return MovieReviewDto.fromEntity(movieReview); // ✅ DTO로 변환하여 반환
     }
 }

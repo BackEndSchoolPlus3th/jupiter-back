@@ -1,11 +1,8 @@
 package com.jupiter.wyl.domain.movie.movie.service;
 
-import com.jupiter.wyl.domain.chatBot.entity.Message;
-import com.jupiter.wyl.domain.movie.movie.dto.request.ReviewRequest;
 import com.jupiter.wyl.domain.movie.movie.dto.response.*;
 import com.jupiter.wyl.domain.movie.movie.entity.Movie;
 import com.jupiter.wyl.domain.movie.movie.entity.MovieGenre;
-import com.jupiter.wyl.domain.movie.movie.entity.MovieReview;
 import com.jupiter.wyl.domain.movie.movie.repository.jpa.MovieRepository;
 import com.jupiter.wyl.domain.movie.movie.repository.jpa.MovieReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
