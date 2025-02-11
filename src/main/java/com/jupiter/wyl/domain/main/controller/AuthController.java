@@ -16,8 +16,8 @@ public class AuthController {
     @GetMapping("/check")
     public ResponseEntity<?> checkAuth(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        if (cookies == null) {
-            Cookie cookie = new Cookie("",null);
+
+        if (cookies == null || cookies.length == 0) {
             return ResponseEntity.ok("쿠키가 없습니다.");
         }
 
