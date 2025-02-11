@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @GetMapping("/check")
-    @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+    @CrossOrigin(origins = "https://www.wyl.seoez.site/", allowCredentials = "true")
     public ResponseEntity<?> checkAuth(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No cookies found");
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No cookies found");
         }
 
         for (Cookie cookie : cookies) {

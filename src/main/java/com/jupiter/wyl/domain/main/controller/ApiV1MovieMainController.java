@@ -50,13 +50,11 @@ public class ApiV1MovieMainController {
     }
 
     @GetMapping("/api/v1/movie/top-rated")
-    @CrossOrigin(origins = "http://localhost:5173")
     public List<MovieMainDto> getTopRatedMovies() {
         return movieMainService.getTopRatedMovies();
     }
 
     @GetMapping("/api/v1/movie/genre/{genreId}")
-    @CrossOrigin(origins = "http://localhost:5173")
     public List<MovieMainDto> getMoviesByGenre(@PathVariable String genreId) {
         return movieMainService.getMoviesByGenre(genreId);
     }
@@ -76,10 +74,10 @@ public class ApiV1MovieMainController {
             }
         }
 //           테스트를 위해 임시 주석
-//        if (accessToken.isBlank()) {
-//            // 토큰이 없으면 기본 영화 목록 반환
-//            return movieMainService.defaultMoviesByGenre("SF");
-//        }
+       if (accessToken.isBlank()) {
+           // 토큰이 없으면 기본 영화 목록 반환
+           return movieMainService.defaultMoviesByGenre("SF");
+       }
 
         // JWT 토큰을 검증하고 이메일을 추출
         String email = null;
@@ -88,9 +86,8 @@ public class ApiV1MovieMainController {
             System.out.println("사용자 이메일: "+email);
         } catch (Exception e) {
             // 토큰이 유효하지 않거나 이메일 추출 실패 시 기본 영화 목록 반환
-//           테스트를 위해 임시 주석
-//            return movieMainService.defaultMoviesByGenre("SF");
-            email="banana@aaa.aaa";
+          테스트를 위해 임시 주석
+           return movieMainService.defaultMoviesByGenre("SF");
         }
 
         return movieMainService.searchMoviesByKeyword(email);  // 이메일을 기준으로 장르 영화 반환

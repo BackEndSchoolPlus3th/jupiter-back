@@ -15,12 +15,16 @@ spring:
     username: root
     password: root123414
     driver-class-name: com.mysql.cj.jdbc.Driver
-#  elasticsearch: # 로컬 환경에서 테스트를 위해 임시 주석 처리, 배포 시 주석 처리 제외 필요
-#    uris: http://175.45.202.162:9200/  # Elasticsearch 서버 주소
+  elasticsearch: # 로컬 환경에서 테스트를 위해 임시 주석 처리, 배포 시 주석 처리 제외 필요
+    uris: http://175.45.202.162:9200/  # Elasticsearch 서버 주소
   jpa:
     open-in-view: false
     hibernate:
       ddl-auto: update
+  autoconfigure: # 로컬에서 실행할 때는 Redis와 Session 설정을 제외
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.session.SessionAutoConfiguration
     properties:
       hibernate:
         default_batch_fetch_size: 100
@@ -47,7 +51,7 @@ custom:
     frontUrl: "https://www.${custom.prod.cookiedomain}/"
     backUrl: "https://api.${custom.prod.cookiedomain}/"
   site:
-    name: "WYL DEV"
+    name: "WYL"
     cookieDomain: "${custom.dev.cookieDomain}"
     frontUrl: "${custom.dev.frontUrl}"
     backUrl: "${custom.dev.backUrl}"
