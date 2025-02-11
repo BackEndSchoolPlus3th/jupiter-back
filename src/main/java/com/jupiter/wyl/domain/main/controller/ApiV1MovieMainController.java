@@ -43,6 +43,12 @@ public class ApiV1MovieMainController {
 
     private final MovieMainService movieMainService;
     private final MovieGenreMainService movieGenreMainService;
+    private final MovieGenreMainService movieGenreMainService;
+
+    public ApiV1MovieMainController(MovieMainService movieMainService, MovieGenreMainService movieGenreMainService) {
+        this.movieMainService = movieMainService;
+        this.movieGenreMainService = movieGenreMainService;
+    }
     private final MemberService memberService;
 
     @GetMapping("/api/v1/movie/popular")
