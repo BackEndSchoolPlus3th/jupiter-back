@@ -86,7 +86,6 @@ public class ApiV1MovieMainController {
             System.out.println("사용자 이메일: "+email);
         } catch (Exception e) {
             // 토큰이 유효하지 않거나 이메일 추출 실패 시 기본 영화 목록 반환
-          테스트를 위해 임시 주석
            return movieMainService.defaultMoviesByGenre("SF");
         }
 
