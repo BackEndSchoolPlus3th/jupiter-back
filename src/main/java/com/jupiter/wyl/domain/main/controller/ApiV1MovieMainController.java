@@ -72,7 +72,7 @@ public class ApiV1MovieMainController {
                 }
             }
         }
-//           테스트를 위해 임시 주석
+
        if (accessToken.isBlank()) {
            // 토큰이 없으면 기본 영화 목록 반환
            return movieMainService.defaultMoviesByGenre("미스터리");

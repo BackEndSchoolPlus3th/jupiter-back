@@ -213,9 +213,18 @@ public class MovieMainService {
     public List<MovieRecommandDto> searchMoviesByKeyword(String email) throws IOException {
         Member member = memberService.findByEmail(email).get();
         String genre = member.getLikeGenres().split(",")[0];
-        String keyword1 = member.getLikeKeywords().split(",")[0];
-        String keyword2 = member.getLikeKeywords().split(",")[1];
-        String keyword3 = member.getLikeKeywords().split(",")[2];
+        String keyword1;
+        String keyword2;
+        String keyword3;
+        if(!member.getLikeKeywords().contains(",")){
+            keyword1 = "based on novel or book";
+            keyword2 = "college";
+            keyword3 = "vampire";
+        }else{
+            keyword1 = member.getLikeKeywords().split(",")[0];
+            keyword2 = member.getLikeKeywords().split(",")[1];
+            keyword3 = member.getLikeKeywords().split(",")[2];
+        }
         System.out.println("kw1: "+ keyword1);
         System.out.println("kw2: "+ keyword2);
         System.out.println("gr: "+ genre);

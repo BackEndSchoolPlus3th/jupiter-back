@@ -11,6 +11,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -20,6 +22,7 @@ public class ApiSecurityConfig {
     @Bean
     SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(withDefaults()) // CORS 설정 활성화
                 .securityMatcher("/api/**")
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers(new AntPathRequestMatcher("/api/**")).permitAll())

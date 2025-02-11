@@ -30,13 +30,13 @@ public class MemberInitData {
                     Member member3 = memberService.join("cherry@aaa.aaa", "최웃음", "123456");
 
                     member1.setLikeGenres("공포,미스터리,스릴러");
-                    member1.setLikeKeywords("cold,based on novel or book,gothic horror,desire,satire,aging,celebrity");
+                    member1.setLikeKeywords("based on novel or book,college,vampire,satire,aging,celebrity");
 
                     member2.setLikeGenres("가족,모험,드라마,애니메이션");
-                    member2.setLikeKeywords("witch,dancing,based on novel or book,college,bangkok,thailand,remake,italian");
+                    member2.setLikeKeywords("witch,christmas,based on novel or book,college,bangkok,thailand,remake,italian");
 
                     member3.setLikeGenres("코미디,액션,SF");
-                    member3.setLikeKeywords("moon,sequel,based on video game,holiday,kidnapping,santa claus,polar bear,christmas");
+                    member3.setLikeKeywords("moon,space,science fiction,holiday,kidnapping,santa claus,polar bear,christmas");
                 }
             }
         };
