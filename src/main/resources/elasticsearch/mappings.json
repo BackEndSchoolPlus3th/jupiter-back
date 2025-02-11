@@ -1,0 +1,20 @@
+{
+  "properties": {
+    "title": {
+      "type": "text",
+      "analyzer": "korean"
+    },
+    "overview": {
+      "type": "text",
+      "analyzer": "korean"
+    },
+    "actors": {
+      "type": "text",
+      "analyzer": "korean"
+    },
+    "director" : {
+      "type": "text",
+      "analyzer": "korean"
+    }
+  }
+}

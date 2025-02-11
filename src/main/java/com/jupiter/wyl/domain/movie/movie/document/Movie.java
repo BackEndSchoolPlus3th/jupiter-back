@@ -6,6 +6,9 @@ import com.jupiter.wyl.domain.movie.movie.entity.MovieReview;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Setting;
+import org.springframework.data.elasticsearch.annotations.Mapping;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,7 +18,9 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(indexName = "movie")
+@Document(indexName = "movie", createIndex = true)
+@Setting(settingPath = "/elasticsearch/settings.json")
+@Mapping(mappingPath = "/elasticsearch/mappings.json")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {
     @Id
@@ -27,6 +32,7 @@ public class Movie {
     private float vote_average;
     private String status;
     private String director;
+    private String actors;
     private String popularity;
     private String poster_path;
     private String original_language;

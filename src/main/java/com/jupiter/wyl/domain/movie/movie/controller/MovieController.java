@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/api/v1/movie")
@@ -28,19 +29,20 @@ public class MovieController {
     }
 
     @GetMapping("/search")
-    public List<MovieSearchDto> findByTitleOrOverviewOrActorsOrDirector(@RequestParam("word") String word){
+    public List<MovieSearchDto> findByTitleOrOverviewOrActorsOrDirector(@RequestParam("word") String word) throws IOException {
         List<MovieSearchDto> movieSearchDtos = movieSearchService.findByTitleOrOverviewOrActorsOrDirector(word);
         return movieSearchDtos;
     }
 
     @GetMapping("/search/popular")
-    public List<MovieSearchDto> findByTitleOrOverviewOrActorsOrDirectorPopular(@RequestParam("word") String word){
+    public List<MovieSearchDto> findByTitleOrOverviewOrActorsOrDirectorPopular(@RequestParam("word") String word) throws IOException {
         List<MovieSearchDto> movieSearchDtos = movieSearchService.findByTitleOrOverviewOrActorsOrDirectorPopular(word);
+
         return movieSearchDtos;
     }
 
     @GetMapping("/search/latest")
-    public List<MovieSearchDto> findByTitleOrOverviewOrActorsOrDirectorLatest(@RequestParam("word") String word){
+    public List<MovieSearchDto> findByTitleOrOverviewOrActorsOrDirectorLatest(@RequestParam("word") String word) throws IOException {
         List<MovieSearchDto> movieSearchDtos = movieSearchService.findByTitleOrOverviewOrActorsOrDirectorLatest(word);
         return movieSearchDtos;
     }
