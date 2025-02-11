@@ -27,6 +27,6 @@ public class AuthController {
             }
         }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Token not found");
+        return ResponseEntity.ok("쿠키가 없습니다."); // 500 에러가 아닌 OK 응답
     }
 }

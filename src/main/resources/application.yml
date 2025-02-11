@@ -15,12 +15,12 @@ spring:
     username: root
     password: root123414
     driver-class-name: com.mysql.cj.jdbc.Driver
-  elasticsearch: # 로컬 환경에서 테스트를 위해 임시 주석 처리, 배포 시 주석 처리 제외 필요
-    uris: http://175.45.202.162:9200/  # Elasticsearch 서버 주소
+#  elasticsearch: # 로컬 환경에서 테스트를 위해 임시 주석 처리, 배포 시 주석 처리 제외 필요
+#    uris: http://175.45.202.162:9200/  # Elasticsearch 서버 주소
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: vaildate
   autoconfigure: # 로컬에서 실행할 때는 Redis와 Session 설정을 제외
     exclude:
       - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
@@ -70,4 +70,4 @@ spring doc:
   default-produces-media-type: application/json
   paths-to-match:
 
-  - /api/**
+    - /api/**

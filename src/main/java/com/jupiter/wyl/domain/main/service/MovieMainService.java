@@ -220,19 +220,15 @@ public class MovieMainService {
         System.out.println("kw2: "+ keyword2);
         System.out.println("gr: "+ genre);
 
-        // 1️⃣ 반드시 포함해야 하는 키워드 (must)
-//        Query mustKeywordQuery = MatchQuery.of(m -> m
-//                .field("keywords")
-//                .query(keyword1)
-//        )._toQuery();
-
+        //가장 높은 키워드에 2배 높은 점수
         Query shouldKeywordQuery1 = MatchPhraseQuery.of(m -> m
                 .field("keywords")
                 .query(keyword1)
                 .slop(3)
                 .boost(2.5f)  // 가중치 2.5배
         )._toQuery();
-        //
+
+        //두번째 키워드에 2배 높은 점수
         Query shouldKeywordQuery2 = MatchPhraseQuery.of(m -> m
                 .field("keywords")
                 .query(keyword2)
@@ -241,7 +237,7 @@ public class MovieMainService {
         )._toQuery();
 
 
-        // 2️⃣ 있으면 점수를 올리는 키워드 (should)
+        // 세 번째 키워드에 1.5배 점수
         Query shouldKeywordQuery3 = MatchPhraseQuery.of(m -> m
                 .field("keywords")
                 .query(keyword3)
@@ -249,20 +245,20 @@ public class MovieMainService {
                 .boost(1.5f)  // 가중치 1.5배
         )._toQuery();
 
-        // 2️⃣ 있으면 제외하는 키워드 (should)
+        // 성인 키워드 제외
         Query mustKeywordQuery = MatchQuery.of(m -> m
                 .field("keywords")
                 .query("erotic")
         )._toQuery();
 
-        // 3️⃣ 장르가 포함되면 점수를 올림 (should)
+        // 선호 장르가 포함되면 점수 상승
         Query shouldGenreQuery = MatchQuery.of(m -> m
                 .field("genres")
                 .query(genre)
                 .boost(1f)  // 가중치 1배
         )._toQuery();
 
-        // 4️⃣ Bool 쿼리 조합
+        // 상위 쿼리 조합
         Query boolQuery = BoolQuery.of(b -> b
                 .should(shouldKeywordQuery1) // 키워드1 점수 증가
                 .should(shouldKeywordQuery2)  //  키워드2 점수 증가
@@ -272,7 +268,7 @@ public class MovieMainService {
         )._toQuery();
 
 
-        // 5️⃣ 검색 요청 생성
+        // 5검색 요청 생성
         SearchRequest searchRequest = SearchRequest.of(s -> s
                 .index("movie_genres")  // 검색할 인덱스 지정
                 .query(boolQuery)
