@@ -8,6 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 public class MovieMainDto {
     private Long id;
     private String title;

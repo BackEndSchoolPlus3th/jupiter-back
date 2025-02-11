@@ -15,6 +15,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.ALL;
+
 @Entity
 @Builder
 @Getter
@@ -46,7 +48,7 @@ public class Movie {
     @Column(length = 512)
     private String genres;  // String으로 정의한 genres 필드 추가
 
-    @OneToMany
+    @OneToMany(mappedBy = "movie", cascade = ALL, orphanRemoval = true)
     List<MovieReview>  movieReviewList;
 
     public Movie(){
