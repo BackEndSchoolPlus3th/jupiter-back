@@ -1,32 +1,25 @@
 package com.jupiter.wyl.domain.movie.movie.service;
 
 
-import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.WildcardQuery;
-import co.elastic.clients.util.ObjectBuilder;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import com.jupiter.wyl.domain.movie.movie.dto.response.*;
 import com.jupiter.wyl.domain.movie.movie.document.Movie;
 import com.jupiter.wyl.domain.movie.movie.repository.elastic.MovieSearchRepository;
-import com.jupiter.wyl.domain.movie.movie.repository.jpa.MovieRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
-import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.jupiter.wyl.domain.movie.movie.service.MovieService.findCountryName;
