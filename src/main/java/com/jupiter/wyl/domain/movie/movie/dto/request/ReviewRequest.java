@@ -1,13 +1,15 @@
 package com.jupiter.wyl.domain.movie.movie.dto.request;
 
+import com.jupiter.wyl.domain.movie.movie.entity.Movie;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ReviewRequest {
-    private String content;
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
+    private Long id;
+    private String reviewContent;
+    private int rating;
+    private Long userId;
+    private Long movie;
 }

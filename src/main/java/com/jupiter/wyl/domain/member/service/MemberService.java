@@ -42,7 +42,8 @@ public class MemberService {
         if (CheckedSignUpMember != null) {
             throw new ServiceException(ExceptionCode.EMAIL_ALREADY_REGISTERED);
         } else if (CheckedSignUpMemberNickname != null) {
-            throw new ServiceException(ExceptionCode.NICKNAME_ALREADY_TAKEN);
+            nickname="이름없는 어피치";
+//            throw new ServiceException(ExceptionCode.NICKNAME_ALREADY_TAKEN); // 닉네임은 중복이어도 무관, 현재 서비스 회원가입 창에 닉네임을 별도로 설정하는 곳이 없으므로 주석 처리.
         }
 
         Member member = Member.builder()
@@ -51,6 +52,24 @@ public class MemberService {
                 .password(password)
                 .password(passwordEncoder.encode(password))
                 .build();
+
+        // 가데이터 입력
+            switch(member.getEmail()){
+                case "apple@aaa.aaa" :
+                    member.setLikeGenres("공포,미스터리,스릴러");
+                    member.setLikeKeywords("cold,based on novel or book,gothic horror,desire,satire,aging,celebrity");
+                    break;
+                case "banana@aaa.aaa" :
+                    member.setLikeGenres("가족,모험,드라마,애니메이션");
+                    member.setLikeKeywords("witch,dancing,based on novel or book,college,bangkok,thailand,remake,italian");
+                    break;
+                case "cherry@aaa.aaa" :
+                    member.setLikeGenres("코미디,액션,SF");
+                    member.setLikeKeywords("moon,sequel,based on video game,holiday,kidnapping,santa claus,polar bear,christmas");
+                    break;
+            }
+
+        // 가데이터 입력 종료
 
         String refreshToken = jwtProvider.genRefreshToken(member);
         member.setRefreshToken(refreshToken);
@@ -79,4 +98,17 @@ public class MemberService {
         return new SecurityUser(id, nickname, "", authorities);
     }
 
+    // 토큰으로 User의 이메일 정보 가져오기
+    public SecurityUser getEmailFromAccessToken(String accessToken) {
+        Map<String, Object> payloadBody = jwtProvider.getClaims(accessToken);
+        long id = (int) payloadBody.get("id");
+        String email = (String) payloadBody.get("email");
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        return new SecurityUser(id, email, "", authorities);
+    }
+
+    // 멤버 정보
+    public String getUserLikeGenres(String email){
+        return memberRepository.findByEmail(email).get().getLikeGenres();
+    }
 }
