@@ -60,7 +60,6 @@ public class ApiV1MovieMainController {
     }
 
     @GetMapping("/api/v1/movie/likes_keyword")
-    @CrossOrigin(origins = "http://localhost:5173")
     public List<MovieRecommandDto> getMoviesByLikeKeyword(HttpServletRequest request) throws IOException {
         Cookie[] cookies = request.getCookies();
         String accessToken = "";
@@ -94,7 +93,6 @@ public class ApiV1MovieMainController {
     }
 
     @GetMapping("/api/v1/movie/likes")
-    @CrossOrigin(origins = "http://localhost:5173")
     public List<MovieRecommandDto> getMoviesByLikeGenre(HttpServletRequest request) throws IOException {
         Cookie[] cookies = request.getCookies();
         String accessToken = "";
@@ -130,7 +128,6 @@ public class ApiV1MovieMainController {
     }
 
     @GetMapping("/api/v1/movie/likes_2nd")
-    @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
     public List<MovieRecommandDto> getMoviesByLikeGenre_2nd(HttpServletRequest request) throws IOException {
         Cookie[] cookies = request.getCookies();
         String accessToken = "";
