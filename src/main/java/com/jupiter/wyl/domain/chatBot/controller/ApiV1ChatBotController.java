@@ -34,8 +34,15 @@ public class ApiV1ChatBotController {
         String userId = chatRequest.getUserId();
         String userMessage = chatRequest.getUserMessage();
 
-        // 서버로부터 받은 메시지 처리 (예: chatGPT로 메시지 전송)
-        String gptResponse = chatBotService.getChatGptResponse(userId, userMessage);
+        String gptResponse;
+
+        if (userMessage.contains("영화") || userMessage.contains("추천")) {
+            // 영화 관련 요청이라면 영화 추천 로직을 호출
+            gptResponse = chatBotService.getChatGptMovieResponse(userId, userMessage);
+        } else {
+            // 그 외의 일반적인 요청은 기존 GPT 응답을 호출
+            gptResponse = chatBotService.getChatGptResponse(userId, userMessage);
+        }
 
         // MongoDB에 사용자 메시지와 챗봇 응답 저장
         chatBotService.saveMessage(userId, userMessage, gptResponse);
@@ -44,7 +51,6 @@ public class ApiV1ChatBotController {
     }
 
     // 이전 메시지 불러오기
-    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/api/v1/chat/previousMessages")
     public ResponseEntity<List<Message>> getPreviousMessages(@RequestParam(name = "userId") String userId) {
         try {

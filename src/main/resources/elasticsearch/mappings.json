@@ -1,0 +1,66 @@
+{
+  "properties": {
+    "title": {
+      "type": "text",
+      "fields": {
+        "ngram": {
+          "type": "text",
+          "analyzer": "ngram_analyzer"
+        },
+        "nori": {
+          "type": "text",
+          "analyzer": "nori_analyzer"
+        }
+      }
+    },
+    "director": {
+      "type": "text",
+      "fields": {
+        "ngram": {
+          "type": "text",
+          "analyzer": "ngram_analyzer"
+        },
+        "nori": {
+          "type": "text",
+          "analyzer": "nori_analyzer"
+        }
+      }
+    },
+    "actors": {
+      "type": "keyword"
+    },
+    "overview": {
+      "type": "keyword"
+    },
+    "id": {
+      "type": "keyword"
+    },
+    "release_date": {
+      "type": "keyword"
+    },
+    "vote_average": {
+      "type": "keyword"
+    },
+    "status": {
+      "type": "keyword"
+    },
+    "popularity": {
+      "type": "keyword"
+    },
+    "poster_path": {
+      "type": "keyword"
+    },
+    "original_language": {
+      "type": "keyword"
+    },
+    "original_country": {
+      "type": "keyword"
+    },
+    "genre": {
+      "type": "keyword"
+    },
+    "keywords": {
+      "type": "keyword"
+    }
+  }
+}

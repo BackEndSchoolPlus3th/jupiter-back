@@ -21,13 +21,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -115,14 +120,17 @@ public class MovieMainService {
 
     // 영화 데이터 가져오기: API에서 가져오거나 DB에서 가져오기
     public List<MovieMainDto> getMovies(String category) {
-        List<MovieMainDto> movies = fetchMoviesFromApi(category);
-        if (movies.isEmpty()) {
-            // DB에 데이터가 없으면 API에서 데이터를 가져와서 저장
+        List<MovieMain> movieMainList = movieMainRepository.findByCategory(category);
+        List<MovieMainDto> movieMainDtos = movieMainList.stream()
+                .map(movie -> new MovieMainDto(movie.getId(), movie.getTitle(), movie.getOverview(), movie.getPosterPath()))
+                .collect(Collectors.toList());
+
+        if (movieMainDtos.isEmpty()) {
             logger.info("DB에 데이터가 없어서 API에서 데이터를 가져옵니다. 카테고리: {}", category);
-            movies = fetchMoviesFromApi(category);
-            saveMoviesToDatabase(movies, category);  // API에서 가져온 데이터 저장
+            movieMainDtos = fetchMoviesFromApi(category);  // API에서 데이터를 가져옴
+            saveMoviesToDatabase(movieMainDtos, category);  // DB에 저장
         }
-        return movies;
+        return movieMainDtos;
     }
 
     // Popular 영화 가져오기
@@ -133,6 +141,19 @@ public class MovieMainService {
     // TopRated 영화 가져오기
     public List<MovieMainDto> getTopRatedMovies() {
         return getMovies("top_rated");
+    }
+
+    // 장르별 영화 데이터 가져오기
+    public List<MovieMainDto> getActionMovies() {
+        return getMoviesByGenre("28");  // 액션 장르
+    }
+
+    public List<MovieMainDto> getComedyMovies() {
+        return getMoviesByGenre("35");  // 코미디 장르
+    }
+
+    public List<MovieMainDto> getAnimationMovies() {
+        return getMoviesByGenre("16");  // 애니메이션 장르
     }
 
     // 스케줄러: 하루에 한 번만 API 호출 후 DB에 저장
@@ -153,8 +174,8 @@ public class MovieMainService {
             List<MovieMainDto> comedyMovies = getMoviesByGenre("35");  // 코미디 장르
             saveMoviesToDatabase(comedyMovies, "comedy");
 
-            List<MovieMainDto> romanceMovies = getMoviesByGenre("10749");  // 로맨스 장르
-            saveMoviesToDatabase(romanceMovies, "romance");
+            List<MovieMainDto> romanceMovies = getMoviesByGenre("16");  // 애니메이션 장르
+            saveMoviesToDatabase(romanceMovies, "animation");
 
             logger.info("영화 데이터를 스케줄러로 성공적으로 저장했습니다.");
         } catch (Exception e) {
