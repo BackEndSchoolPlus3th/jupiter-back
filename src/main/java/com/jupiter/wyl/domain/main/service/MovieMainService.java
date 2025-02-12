@@ -21,13 +21,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -48,22 +53,6 @@ public class MovieMainService {
     private final MovieSearchRepository movieSearchRepository;
     private final MemberService memberService;
     private static final String BASE_URL = "https://api.themoviedb.org/3";
-
-    // 장르별 영화 데이터를 가져오고 DB에 저장하는 메서드
-    public void saveGenreMoviesToDatabase(String genreId, String category) {
-        try {
-            // 장르별 영화 데이터를 API에서 가져옴
-            List<MovieMainDto> movies = getMoviesByGenre(genreId);
-            if (movies.isEmpty()) {
-                logger.warn("장르 {}의 영화 데이터가 없습니다.", genreId);
-                return;
-            }
-            // 데이터를 DB에 저장
-            saveMoviesToDatabase(movies, category);
-        } catch (Exception e) {
-            logger.error("장르별 영화 저장 실패: {}", e.getMessage());
-        }
-    }
 
     // 영화 데이터 DB에 저장
     @Transactional
@@ -109,7 +98,6 @@ public class MovieMainService {
     // 장르별 영화 데이터를 가져오는 메서드
     public List<MovieMainDto> getMoviesByGenre(String genreId) {
         try {
-            System.out.println("Requesting movies for genreId: " + genreId);
             String url = UriComponentsBuilder.fromHttpUrl(BASE_URL + "/discover/movie")
                     .queryParam("api_key", apiKey)
                     .queryParam("with_genres", genreId)  // 장르 ID로 필터링
@@ -123,17 +111,7 @@ public class MovieMainService {
             if (movieMainResponse != null) {
                 logger.info("장르: {} 영화 데이터를 API에서 성공적으로 가져왔습니다. 총 {}개의 영화.", genreId, movieMainResponse.getResults().size());
             }
-            if (movieMainResponse != null && movieMainResponse.getResults() != null) {
-                return movieMainResponse.getResults().stream()
-                        .map(movie -> new MovieMainDto(
-                                movie.getId(),
-                                movie.getTitle(),
-                                movie.getOverview(),
-                                movie.getPosterPath()))  // MovieMain -> MovieMainDto로 변환
-                        .collect(Collectors.toList());
-            } else {
-                return List.of();  // 결과가 없으면 빈 리스트 반환
-            }
+            return movieMainResponse != null ? movieMainResponse.getResults() : List.of();
         } catch (Exception e) {
             logger.error("API 호출 실패: {}", e.getMessage());
             throw new RuntimeException("영화 데이터를 가져오는 데 실패했습니다.", e);
@@ -174,12 +152,12 @@ public class MovieMainService {
         return getMoviesByGenre("35");  // 코미디 장르
     }
 
-    public List<MovieMainDto> getRomanceMovies() {
-        return getMoviesByGenre("10749");  // 로맨스 장르
+    public List<MovieMainDto> getAnimationMovies() {
+        return getMoviesByGenre("16");  // 애니메이션 장르
     }
 
     // 스케줄러: 하루에 한 번만 API 호출 후 DB에 저장
-    @Scheduled(cron = "0 41 10 * * ?")  // 매일 00:00에 실행
+    @Scheduled(cron = "0 00 00 * * ?")  // 매일 00:00에 실행
     @Transactional
     public void scheduledSaveMovies() {
         try {
@@ -196,8 +174,8 @@ public class MovieMainService {
             List<MovieMainDto> comedyMovies = getMoviesByGenre("35");  // 코미디 장르
             saveMoviesToDatabase(comedyMovies, "comedy");
 
-            List<MovieMainDto> romanceMovies = getMoviesByGenre("10749");  // 로맨스 장르
-            saveMoviesToDatabase(romanceMovies, "romance");
+            List<MovieMainDto> romanceMovies = getMoviesByGenre("16");  // 애니메이션 장르
+            saveMoviesToDatabase(romanceMovies, "animation");
 
             logger.info("영화 데이터를 스케줄러로 성공적으로 저장했습니다.");
         } catch (Exception e) {
