@@ -26,7 +26,6 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
 	implementation ("org.elasticsearch.client:elasticsearch-rest-high-level-client:7.17.9")
-	implementation ("org.elasticsearch.client:elasticsearch-rest-high-level-client:7.17.9")
 
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
