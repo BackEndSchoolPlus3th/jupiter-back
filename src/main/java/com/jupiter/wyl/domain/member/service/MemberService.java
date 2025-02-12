@@ -93,4 +93,10 @@ public class MemberService {
     public String getUserLikeGenres(String email){
         return memberRepository.findByEmail(email).get().getLikeGenres();
     }
+
+    public Long getUserIdByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .map(Member::getId) // 유저 객체에서 ID만 가져옴
+                .orElseThrow(() -> new IllegalArgumentException("해당 이메일의 유저를 찾을 수 없습니다."));
+    }
 }
