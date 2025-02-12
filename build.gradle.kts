@@ -56,6 +56,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-batch")
 	implementation("org.springframework.batch:spring-batch-core:5.0.0")
 	testImplementation("org.springframework.batch:spring-batch-test")
+
+	// redis
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	implementation("org.springframework.session:spring-session-data-redis")
 }
 
 tasks.withType<Test> {

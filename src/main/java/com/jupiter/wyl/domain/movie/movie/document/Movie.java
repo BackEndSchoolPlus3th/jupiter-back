@@ -38,8 +38,8 @@ public class Movie {
     private String original_language;
     private String original_country;
 
-    private String genres;  // ⬅️ 장르를 List<String>로 변경
-    private List<String> keywords; // ⬅️ 키워드도 리스트로 변경
+    private String genres;
+    private String keywords; // ⬅️ 키워드도 리스트로 변경
 
     private List<MovieReview> movieReviewList;
 

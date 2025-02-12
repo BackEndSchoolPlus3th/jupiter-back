@@ -1,16 +1,17 @@
 package com.jupiter.wyl.domain.movie.movie.repository.elastic;
 
+
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.jupiter.wyl.domain.movie.movie.document.Movie;
-import com.jupiter.wyl.domain.movie.movie.dto.response.MovieSearchDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
+
 import java.util.List;
 import java.util.stream.Collectors;
 

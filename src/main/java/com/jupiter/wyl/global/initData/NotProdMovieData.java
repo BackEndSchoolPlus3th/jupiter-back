@@ -13,7 +13,8 @@ import org.springframework.web.client.RestTemplate;
 
 
 @Configuration
-@Profile("prod")
+
+@Profile("!prod")
 public class NotProdMovieData {
     @Value("${tmdb.key}")
     private String key;

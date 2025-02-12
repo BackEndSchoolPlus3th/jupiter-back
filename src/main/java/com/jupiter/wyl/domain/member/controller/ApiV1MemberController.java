@@ -76,7 +76,7 @@ public class ApiV1MemberController {
 
     // 로그아웃
     @GetMapping("/logout")
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
     public RsData<Void> logout(HttpServletResponse response) {
         // 응답 데이터에 accessToken 이름으로 토큰을 발급
         Cookie cookie = new Cookie("accessToken", null);

@@ -1,11 +1,42 @@
 server:
   port: 8090
+  shutdown: graceful # 천천히 종료
 spring:
+  autoconfigure:
+    exclude:
+  lifecycle:
+    # 스프링부트가 종료 요청을 받은 후 기다려줄 수 있는 최대한의 시간
+    timeout-per-shutdown-phase: 1h
   datasource:
-    url: jdbc:mysql://172.17.0.1:3306/wyl_prod
+    url: jdbc:mysql://172.17.0.1:3306/exam_db
     username: root
     password: root123414
     driver-class-name: com.mysql.cj.jdbc.Driver
+  elasticsearch:
+    uris: http://211.188.55.180:9200  # Elasticsearch 서버 주소
+  data:
+    mongodb:
+      uri: mongodb://172.17.0.1:27017/
+      database: chat
+    redis:
+      host: 172.17.0.1
+      port: 6379
+      password: ${custom.secret.spring.data.redis.password}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: false
+        highlight_sql: false
+        use_sql_comments: false
+logging:
+  level:
+    com.ll.demo03: INFO
+    org.hibernate.SQL: INFO
+    org.hibernate.orm.jdbc.bind: INFO
+    org.hibernate.orm.jdbc.extract: INFO
+    org.springframework.transaction.interceptor: INFO
 custom:
   site:
     name: "WYL"
