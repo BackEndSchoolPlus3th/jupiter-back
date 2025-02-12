@@ -96,7 +96,7 @@ public class MovieController {
         return ResponseEntity.ok(reviewDto);
     }
 
-    // 리뷰 수정
+    // 리뷰 수정 수정 깃허브 오류 수정
     @PutMapping("/review/update/{reviewId}")
     public ResponseEntity<String> updateReview(
             @PathVariable("reviewId") Long reviewId,
