@@ -2,19 +2,65 @@
   "properties": {
     "title": {
       "type": "text",
-      "analyzer": "korean"
+      "fields": {
+        "ngram": {
+          "type": "text",
+          "analyzer": "ngram_analyzer"
+        },
+        "nori": {
+          "type": "text",
+          "analyzer": "nori_analyzer"
+        }
+      }
     },
-    "overview": {
+    "director": {
       "type": "text",
-      "analyzer": "korean"
+      "fields": {
+        "ngram": {
+          "type": "text",
+          "analyzer": "ngram_analyzer"
+        },
+        "nori": {
+          "type": "text",
+          "analyzer": "nori_analyzer"
+        }
+      }
     },
     "actors": {
-      "type": "text",
-      "analyzer": "korean"
+      "type": "keyword"
     },
-    "director" : {
-      "type": "text",
-      "analyzer": "korean"
+    "overview": {
+      "type": "keyword"
+    },
+    "id": {
+      "type": "keyword"
+    },
+    "release_date": {
+      "type": "keyword"
+    },
+    "vote_average": {
+      "type": "keyword"
+    },
+    "status": {
+      "type": "keyword"
+    },
+    "popularity": {
+      "type": "keyword"
+    },
+    "poster_path": {
+      "type": "keyword"
+    },
+    "original_language": {
+      "type": "keyword"
+    },
+    "original_country": {
+      "type": "keyword"
+    },
+    "genre": {
+      "type": "keyword"
+    },
+    "keywords": {
+      "type": "keyword"
     }
   }
 }

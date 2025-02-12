@@ -1,9 +1,25 @@
 {
   "index": {
-    "max_ngram_diff": 5,
     "analysis": {
+      "tokenizer": {
+        "ngram_tokenizer": {
+          "type": "ngram",
+          "min_gram": 2,
+          "max_gram": 10,
+          "token_chars": ["letter", "digit", "whitespace"]
+        },
+        "nori_tokenizer": {
+          "type": "nori",
+          "decompound_mode": "mixed"
+        }
+      },
       "analyzer": {
-        "korean": {
+        "ngram_analyzer": {
+          "type": "custom",
+          "tokenizer": "ngram_tokenizer",
+          "filter": ["lowercase"]
+        },
+        "nori_analyzer": {
           "type": "custom",
           "tokenizer": "nori_tokenizer",
           "filter": [
@@ -12,12 +28,6 @@
             "nori_part_of_speech",
             "nori_posfilter"
           ]
-        }
-      },
-      "tokenizer": {
-        "nori_tokenizer": {
-          "type": "nori_tokenizer",
-          "decompound_mode": "mixed"
         }
       },
       "filter": {
