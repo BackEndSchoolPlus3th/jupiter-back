@@ -99,4 +99,10 @@ public class MemberService {
                 .map(Member::getId) // 유저 객체에서 ID만 가져옴
                 .orElseThrow(() -> new IllegalArgumentException("해당 이메일의 유저를 찾을 수 없습니다."));
     }
+
+    public String getUserNameById(Long userId) {
+        return memberRepository.findById(userId)
+                .map(Member::getNickname)
+                .orElse("Unknown User");
+    }
 }
