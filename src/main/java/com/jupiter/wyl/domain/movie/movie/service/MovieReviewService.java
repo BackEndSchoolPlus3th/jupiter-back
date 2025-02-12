@@ -63,4 +63,14 @@ public class MovieReviewService {
 
         return MovieReviewDto.fromEntity(movieReview); // ✅ DTO로 변환하여 반환
     }
+
+    public void updateReview(Long reviewId, String newContent, int newRating) {
+        MovieReview movieReview = movieReviewRepository.findById(reviewId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 리뷰를 찾을 수 없습니다."));
+
+        movieReview.setReviewContent(newContent);
+        movieReview.setRating(newRating);
+
+        movieReviewRepository.save(movieReview);
+    }
 }

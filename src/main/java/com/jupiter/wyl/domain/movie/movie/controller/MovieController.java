@@ -50,18 +50,22 @@ public class MovieController {
         return movieSearchDtos;
     }
 
+    // 영화 상세 페이지 조회
     @GetMapping("/{id}")
     public MovieDto getMovie(@PathVariable("id") Long id) {
         MovieDto movie = movieService.findById(id);
         return movie;
     }
 
+    // 모든 리뷰 조회
     @GetMapping("/reviews/{movieId}")
     public List<MovieReviewDto> getMovieReview(@PathVariable("movieId") Long movieId) {
         List<MovieReviewDto> movieReviews = movieReviewService.findAllByMovieId(movieId);
+        System.out.println(movieReviews);
         return movieReviews;
     }
 
+    //리뷰 작성 하기
     @PostMapping("/review/write")
     public String receiveReview(@RequestBody MovieReviewRequest reviewRequest) {
         String userEmail = reviewRequest.getUser();
@@ -77,6 +81,7 @@ public class MovieController {
         return "-----------------------review-write-success----------------------------";
     }
 
+    // 로그인 한 회원이 쓴 리뷰 조회
     @GetMapping("/review/{userEmail}/{movieId}")
     public ResponseEntity<MovieReviewDto> getMovieReviewByEmail(@PathVariable("userEmail") String userEmail, @PathVariable("movieId") Long movieId) {
 
@@ -87,6 +92,20 @@ public class MovieController {
 
         MovieReviewDto reviewDto = movieReviewService.getReviewByUserAndMovie(userId, movieId);
         return ResponseEntity.ok(reviewDto);
+    }
+
+    // 리뷰 수정
+    @PutMapping("/review/update/{reviewId}")
+    public ResponseEntity<String> updateReview(
+            @PathVariable("reviewId") Long reviewId,
+            @RequestBody MovieReviewRequest moviereviewRequest) {
+
+        System.out.println(reviewId);
+        System.out.println("new Content: " + moviereviewRequest.getReviewContent());
+        System.out.println("new rating: " + moviereviewRequest.getRating());
+
+        movieReviewService.updateReview(reviewId, moviereviewRequest.getReviewContent(), moviereviewRequest.getRating());
+        return ResponseEntity.ok("리뷰 수정 성공");
     }
 
 }
