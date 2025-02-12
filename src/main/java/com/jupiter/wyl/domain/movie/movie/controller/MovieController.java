@@ -72,7 +72,7 @@ public class MovieController {
 
     //리뷰 작성 하기
     @PostMapping("/review/write")
-    public String receiveReview(@RequestBody ReviewRequest reviewRequest, @AuthenticationPrincipal SecurityUser securityUser) {
+    public String receiveReview(@RequestBody MovieReviewRequest reviewRequest, @AuthenticationPrincipal SecurityUser securityUser) {
 
         String reviewContent = reviewRequest.getReviewContent();
         int rating = reviewRequest.getRating();
