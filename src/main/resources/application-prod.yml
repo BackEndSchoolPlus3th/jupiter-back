@@ -12,6 +12,8 @@ spring:
     username: root
     password: root123414
     driver-class-name: com.mysql.cj.jdbc.Driver
+  elasticsearch:
+    uris: http://211.188.55.180:9200  # Elasticsearch 서버 주소
   data:
     mongodb:
       uri: mongodb://172.17.0.1:27017/
@@ -22,7 +24,7 @@ spring:
       password: ${custom.secret.spring.data.redis.password}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: false

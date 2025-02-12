@@ -10,16 +10,19 @@ spring:
   profiles:
     active: dev
     include: secret
+  datasource:
+    url: jdbc:mysql://localhost:3306/exam_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: root
+    password: root123414
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
   autoconfigure: # 로컬에서 실행할 때는 Redis와 Session 설정을 제외
     exclude:
       - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
       - org.springframework.boot.autoconfigure.session.SessionAutoConfiguration
-  elasticsearch:
-    uris: http://175.45.202.162:9200  # Elasticsearch 서버 주소
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: none
     properties:
       hibernate:
         default_batch_fetch_size: 100
@@ -65,4 +68,4 @@ spring doc:
   default-produces-media-type: application/json
   paths-to-match:
 
-  - /api/**
+    - /api/**
