@@ -152,8 +152,8 @@ public class MovieMainService {
         return getMoviesByGenre("35");  // 코미디 장르
     }
 
-    public List<MovieMainDto> getRomanceMovies() {
-        return getMoviesByGenre("10749");  // 로맨스 장르
+    public List<MovieMainDto> getAnimationMovies() {
+        return getMoviesByGenre("16");  // 애니메이션 장르
     }
 
     // 스케줄러: 하루에 한 번만 API 호출 후 DB에 저장
@@ -174,7 +174,7 @@ public class MovieMainService {
             List<MovieMainDto> comedyMovies = getMoviesByGenre("35");  // 코미디 장르
             saveMoviesToDatabase(comedyMovies, "comedy");
 
-            List<MovieMainDto> romanceMovies = getMoviesByGenre("16");  // 로맨스 장르
+            List<MovieMainDto> romanceMovies = getMoviesByGenre("16");  // 애니메이션 장르
             saveMoviesToDatabase(romanceMovies, "animation");
 
             logger.info("영화 데이터를 스케줄러로 성공적으로 저장했습니다.");
@@ -183,7 +183,8 @@ public class MovieMainService {
         }
     }
 
-    public List<MovieMainDto> defaultMoviesByGenre(String genre) throws IOException {
+    // 사용자의 정보가 없는 기본 장르 검색 메소드
+    public List<MovieRecommandDto> defaultMoviesByGenre(String genre) throws IOException {
         logger.info(genre);
         SearchResponse<Movie> response = elasticsearchClient.search(s -> s
                         .index("movie_genres")  // 🔹 Elasticsearch에서 사용할 인덱스명 (변경 가능)
@@ -321,11 +322,13 @@ public class MovieMainService {
     }
 
     // 🔹 Movie → MovieMainDto 변환 메서드
-    private MovieMainDto convertToDto(Movie movie) {
-        return new MovieMainDto(
+    private MovieRecommandDto convertToDto(Movie movie) {
+        return new MovieRecommandDto(
                 movie.getId(),
                 movie.getTitle(),
                 movie.getOverview(),
+                movie.getGenres(),
+                movie.getKeywords(),
                 movie.getPoster_path()
         );
     }
