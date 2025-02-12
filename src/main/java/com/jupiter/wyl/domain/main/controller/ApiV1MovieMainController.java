@@ -2,6 +2,7 @@ package com.jupiter.wyl.domain.main.controller;
 
 import com.jupiter.wyl.domain.main.dto.MovieMainDto;
 import com.jupiter.wyl.domain.main.dto.MovieRecommandDto;
+import com.jupiter.wyl.domain.main.service.MovieGenreMainService;
 import com.jupiter.wyl.domain.main.service.MovieMainService;
 import com.jupiter.wyl.domain.member.entity.Member;
 import com.jupiter.wyl.domain.member.service.MemberService;
@@ -42,6 +43,7 @@ public class ApiV1MovieMainController {
     }
 
     private final MovieMainService movieMainService;
+    private final MovieGenreMainService movieGenreMainService;
     private final MemberService memberService;
 
     @GetMapping("/api/v1/movie/popular")
