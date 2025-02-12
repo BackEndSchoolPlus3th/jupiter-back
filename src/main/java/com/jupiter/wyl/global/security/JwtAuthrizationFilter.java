@@ -27,7 +27,11 @@ public class JwtAuthrizationFilter extends OncePerRequestFilter {
     @SneakyThrows
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         // 검증이 필요 없는 uri 처리
-        if (request.getRequestURI().equals("/api/v1/member/login") || request.getRequestURI().equals("/api/v1/member/logout") || request.getRequestURI().equals("/api/v1/member/signup")) {
+        if (request.getRequestURI().equals("/api/v1/member/login") ||
+                request.getRequestURI().equals("/api/v1/member/logout") ||
+                request.getRequestURI().equals("/api/v1/member/signup") ||
+                request.getRequestURI().equals("/api/v1/movie/reviews/**") ||
+                request.getRequestURI().equals("/api/*/auth/check")) {
             filterChain.doFilter(request, response);
             return;
         }

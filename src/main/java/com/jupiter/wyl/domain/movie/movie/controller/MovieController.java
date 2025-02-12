@@ -11,7 +11,10 @@ import com.jupiter.wyl.domain.movie.movie.entity.MovieReview;
 import com.jupiter.wyl.domain.movie.movie.service.MovieSearchService;
 import com.jupiter.wyl.domain.movie.movie.service.MovieService;
 import com.jupiter.wyl.domain.movie.movie.service.MovieReviewService;
+import com.jupiter.wyl.global.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,13 +72,11 @@ public class MovieController {
 
     //리뷰 작성 하기
     @PostMapping("/review/write")
-    public String receiveReview(@RequestBody MovieReviewRequest reviewRequest) {
-        String userEmail = reviewRequest.getUser();
-
-        Long userId = memberService.getUserIdByEmail(userEmail);
+    public String receiveReview(@RequestBody ReviewRequest reviewRequest, @AuthenticationPrincipal SecurityUser securityUser) {
 
         String reviewContent = reviewRequest.getReviewContent();
         int rating = reviewRequest.getRating();
+        long userId = securityUser.getId();
         Long movie = reviewRequest.getMovie();
 
         movieReviewService.saveReview(userId, reviewContent, rating, movie);

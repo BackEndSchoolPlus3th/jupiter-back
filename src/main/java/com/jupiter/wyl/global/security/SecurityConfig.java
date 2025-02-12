@@ -16,6 +16,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+// API가 아닌 다른 요청 (정적 리소스, 웹 페이지 등)에 대한 보안 설정
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -30,6 +31,7 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // 비밀번호 암호화를 위한 PasswordEncoder(BCrypt) 설정
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
