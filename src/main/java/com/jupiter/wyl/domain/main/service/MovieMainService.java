@@ -303,6 +303,11 @@ public class MovieMainService {
                 .query("erotic")
         )._toQuery();
 
+        // 성인 키워드 제외2
+        Query mustKeywordQuery2 = MatchQuery.of(m -> m
+                .field("keywords")
+                .query("erotic thriller")
+        )._toQuery();
         // 선호 장르가 포함되면 점수 상승
         Query shouldGenreQuery = MatchQuery.of(m -> m
                 .field("genres")
@@ -316,6 +321,7 @@ public class MovieMainService {
                 .should(shouldKeywordQuery2)  //  키워드2 점수 증가
                 .should(shouldKeywordQuery3) // 키워드3 점수 증가
                 .mustNot(mustKeywordQuery) // 키워드4 점수 감소
+                .mustNot(mustKeywordQuery2) // 키워드4 점수 감소
                 .minimumShouldMatch("50%") // 최소 하나의 should 조건 충족 시 검색 결과 포함
         )._toQuery();
 

@@ -10,8 +10,10 @@ import com.jupiter.wyl.domain.movie.movie.dto.response.MovieSearchDto;
 import com.jupiter.wyl.domain.movie.movie.service.MovieSearchService;
 import com.jupiter.wyl.domain.movie.movie.service.MovieService;
 import com.jupiter.wyl.domain.movie.movie.service.MovieReviewService;
+import com.jupiter.wyl.global.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,18 +56,18 @@ public class MovieController {
         return movie;
     }
 
-    @GetMapping("/review/{movieId}")
+    @GetMapping("/reviews/{movieId}")
     public List<MovieReviewDto> getMovieReview(@PathVariable("movieId") Long movieId) {
         List<MovieReviewDto> movieReviews = movieReviewService.findAllByMovieId(movieId);
         return movieReviews;
     }
 
     @PostMapping("/review/write")
-    public String receiveReview(@RequestBody ReviewRequest reviewRequest) {
+    public String receiveReview(@RequestBody ReviewRequest reviewRequest, @AuthenticationPrincipal SecurityUser securityUser) {
 
         String reviewContent = reviewRequest.getReviewContent();
         int rating = reviewRequest.getRating();
-        long userId = reviewRequest.getUserId();
+        long userId = securityUser.getId();
         Long movie = reviewRequest.getMovie();
 
         movieReviewService.saveReview(userId, reviewContent, rating, movie);

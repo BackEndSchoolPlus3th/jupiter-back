@@ -1,6 +1,6 @@
 package com.jupiter.wyl.global.websocket;
 
-import com.jupiter.wyl.global.app.AppConfig;
+import com.jupiter.wyl.global.config.AppConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
