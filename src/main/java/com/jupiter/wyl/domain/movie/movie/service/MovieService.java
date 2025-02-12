@@ -208,8 +208,8 @@ public class MovieService {
                 .original_country(movie.getOriginal_country())
                 .original_language(movie.getKeywords())
                 .genres(movie.getGenres())
+                .actors(movie.getActors())
                 .director(movie.getDirector())
-                .genres(movie.getActors())
                 .build();
         return movieDto;
     }
