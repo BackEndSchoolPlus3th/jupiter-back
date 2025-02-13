@@ -1,7 +1,8 @@
 # 우주라이크🌌
 
-배포링크 : http://211.188.55.180:5601/ <br>
-노션페이지 : https://volcano-plutonium-0bf.notion.site/LIKELION-17d25a7b9d0c80e18460fa0087f64e91?pvs=4
+배포링크 : [링크](https://www.wyl.seoez.site/) <br>
+노션페이지 : [링크](https://volcano-plutonium-0bf.notion.site/LIKELION-17d25a7b9d0c80e18460fa0087f64e91?pvs=4)
+시연 영상 : [링크](https://youtu.be/KrzRz4Y0wHg)
 
 <br>
 
