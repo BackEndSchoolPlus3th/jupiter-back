@@ -1,16 +1,22 @@
 # 우주라이크🌌
 
 배포링크 : [링크](https://www.wyl.seoez.site/) <br>
-노션페이지 : [링크](https://volcano-plutonium-0bf.notion.site/LIKELION-17d25a7b9d0c80e18460fa0087f64e91?pvs=4)
+노션페이지 : [링크](https://volcano-plutonium-0bf.notion.site/LIKELION-17d25a7b9d0c80e18460fa0087f64e91?pvs=4) <br>
 시연 영상 : [링크](https://youtu.be/KrzRz4Y0wHg)
 
 <br>
 
 ## 프로젝트 개요 
+사용자의 취향에 맞추어 그날의 보고 싶은 영화 콘텐츠 및 취향에 맞는 영화를 추천하기 위한 서비스
+영화 검색 기능 및 정보 확인, 챗봇 기능을 제공한다.
+사용자는 자신이 좋거나 나쁘게 보았던 영화들을 기반으로 자신의 취향에 맞는 컨텐츠를 추천받을 수 있다.
+
+참고 사이트(왓챠피디아): [링크](https://pedia.watcha.com/ko-KR)
 
 ### 프로젝트 목적
-1. 사용자의 취향에 맞추어 그날의 보고 싶은 콘텐츠를 추천하기 위한 서비스
-2. 사용자가 좋아하는 콘텐츠들을 빠르게 제공하는 서비스
+1. 엘라스틱 서치를 이용한 검색 및 추천 서비스 개발
+2. Open API를 이용한 챗봇 및 다양한 영화 데이터 누적
+3. JWT를 이용한 로그인 기능 개발
 
 <br>
 
