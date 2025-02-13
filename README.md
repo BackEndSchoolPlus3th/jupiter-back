@@ -1,4 +1,5 @@
 # 우주라이크🌌
+![image](https://github.com/user-attachments/assets/e962fe6a-0c49-4a88-a416-6e91e6e56eba)
 
 배포링크 : [링크](https://www.wyl.seoez.site/) <br>
 노션페이지 : [링크](https://volcano-plutonium-0bf.notion.site/LIKELION-17d25a7b9d0c80e18460fa0087f64e91?pvs=4) <br>
