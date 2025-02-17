@@ -40,7 +40,7 @@
 ### 기술스택
 
 BackEnd
-- Spring Boot 3.3.1, JAVA 23, JPA
+- Spring Boot 3.3.1, JAVA 23, JPA, Spring Security, JWT
 - MySQL8.0, MongoDB 8.0.4
 - Elasticsearch, logstash, kibana
 
@@ -48,12 +48,15 @@ BackEnd
 
 FrontEnd
 - React
+- vite
 - Tailwind
 
 <br>
 
 Infra
-- Naver Cloud 
+- AWS EC2
+- Naver Cloud Platform
+- terraform
 - vercel
 - Github Action
 - Docker 
