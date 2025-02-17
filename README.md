@@ -69,11 +69,11 @@ Tool
 <br>
 
 ### 시스템 아키텍처
-![시스템 아키텍처](https://github.com/user-attachments/assets/f9c5aae0-ec6a-4181-bd16-161e48db940d)
+![시스템 아키텍처](https://github.com/user-attachments/assets/75f9b88f-3f5b-463a-90ee-4cf684d6d0a8)
 
 
 ### 배포 아키텍처
-![배포 아키텍처](https://github.com/user-attachments/assets/8b835adb-20bf-4e54-b467-4bce6ddac35c)
+![인프라:배포 아키텍처](https://github.com/user-attachments/assets/b424fdd4-32ea-4ba7-b6c1-60c8340af8e9)
 
 
 ### 주요 기능 
